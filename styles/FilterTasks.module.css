@@ -1,0 +1,16 @@
+/* .seletedTasks{
+
+} */
+.checked {
+	font-weight:900;
+	color: black;
+}
+.filter option {
+	color: rgb(48, 45, 45);
+}
+.filter{
+	/* display: grid;
+	grid-template-columns: 1fr 1fr;
+	grid-template-rows: 1fr 1fr; */
+
+}
