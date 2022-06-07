@@ -4,38 +4,40 @@ import { toggleAddedForm } from "../../Store/listSlice";
 import { Category } from "../../types";
 import React from "react";
 import FilterTasks from "./FilterTasks";
-import { ToDoItemList, ToDoItemListComplted } from "./TodoItemList";
-import styles from "../../styles/ToDo.module.css";
+import ToDoItemsList from "./TodoItemList";
+import styles from "../../styles/ToDo.module.scss";
 import AddForm from "./AddForm";
 import ViewTask from "./ViewTask";
+import { useState } from "react";
 
 const SelectTasks: React.FC = () => {
   const { filter, list } = useSelector((state: RootState) => state);
+  const [filterHidden, setFilterHidden] = useState<boolean>(false);
   const { editedTask, categoriesOption, addedForm } = list;
   const { selectedStatus } = filter;
   const dispatch = useDispatch();
   return (
     <div className={styles.tasks}>
-      <h3>Create new Task :</h3>
+      <div className={styles.containerAddTask}>
+        <h3>Create new Task :</h3>
+        <button
+          className={`${styles.create} ${styles.icon}`}
+          onClick={() => dispatch(toggleAddedForm())}
+        >
+          +
+        </button>
+      </div>
       <button
-        className={`${styles.create} ${styles.icon}`}
-        onClick={() => dispatch(toggleAddedForm())}
-      >
-        +
-      </button>
-      <FilterTasks
-        categoriesOption={categoriesOption as Category[]}
-      ></FilterTasks>
-      {(selectedStatus == "active" || selectedStatus == "both") && (
-        <>
-          <ToDoItemList />
-        </>
+        className={styles.FilterBtn}
+        onClick={() => setFilterHidden(!filterHidden)}
+      ></button>
+      {filterHidden && (
+        <FilterTasks
+          categoriesOption={categoriesOption as Category[]}
+        ></FilterTasks>
       )}
-      {(selectedStatus == "completed" || selectedStatus == "both") && (
-        <>
-          <ToDoItemListComplted />
-        </>
-      )}
+      <ToDoItemsList />
+
       {editedTask && <ViewTask />}
       {addedForm && <AddForm />}
     </div>

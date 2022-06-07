@@ -3,11 +3,11 @@ interface ToDoItemListProps {
   setCompltedTask: Function;
   setEditedTask: Function;
 }
-interface ToDoItemListCompltedProps {
-  completedTaskList: CompletedTask[];
-  setEditedTask: Function;
-  setActivedTask: Function;
-}
+// interface ToDoItemListCompltedProps {
+//   completedTaskList: CompletedTask[];
+//   setEditedTask: Function;
+//   setActivedTask: Function;
+// }
 type Category = "gym" | "school" | "daily duties" | "work" | "others";
 type Task = {
   id: string;
@@ -16,19 +16,19 @@ type Task = {
   createDate: number;
   completed: boolean;
   lastModifiedDate?: number;
-  completedDate?: number;
+  completedDate: number | null;
   category: Category;
 };
-type CompletedTask = {
-  id: string;
-  title: string;
-  description: string;
-  createDate: number;
-  completed: boolean;
-  lastModifiedDate?: number;
-  category: Category;
-  completedDate?: number;
-};
+// type CompletedTask = {
+//   id: string;
+//   title: string;
+//   description: string;
+//   createDate: number;
+//   completed: boolean;
+//   lastModifiedDate?: number;
+//   category: Category;
+//   completedDate?: number;
+// };
 interface ListSlice {
   categoriesOption: string[];
   addedForm: boolean;
@@ -36,7 +36,6 @@ interface ListSlice {
   quantityOfCompletedTask: number;
   editedTask: Task | null;
   tasks: Task[];
-  completedTask: CompletedTask[];
 }
 interface FilterOptions {
   complted: Boolean;
@@ -58,11 +57,10 @@ interface AddFormProps {
   prevId: number;
 }
 
-
 type TaskStatus = "both" | "active" | "completed";
 
 interface TaskFilter {
-  selectedCategories: Category[] ;
+  selectedCategories: Category[];
   selectedStatus: TaskStatus;
   selectedDate: Number;
 }
@@ -70,12 +68,12 @@ interface TaskFilter {
 export type {
   ToDoItemListProps,
   Task,
-  CompletedTask,
+  // CompletedTask,
   ListSlice,
   FilterOptions,
   ViewTaskProps,
   AddFormProps,
-  ToDoItemListCompltedProps,
+  // ToDoItemListCompltedProps,
   Category,
   TaskFilter,
   TaskStatus,

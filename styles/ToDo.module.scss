@@ -1,24 +1,39 @@
 .select h2 {
   text-transform: uppercase;
+  font-size: 3rem;
+}
+.containerAddTask {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  width: 100%;
+  height: 100%;
+  & h3 {
+    font-size: 1.5rem;
+  }
 }
 .tasks {
   padding: 0 1rem;
-  background-color: rgba(166, 250, 166, 0.658);
+  background-color: rgba(148, 248, 7, 0.292);
 }
 .task {
-  background-color: rgba(255, 255, 255, 0.336);
-  border: solid 3px rgba(0, 0, 0, 0.678);
+  background-color: white;
+  border: solid 1px rgba(0, 0, 0, 0.678);
   border-radius: 10% 10% 10% 10%;
   margin: 5px 0;
   padding: 0 0.5rem 0 1rem;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  grid-template-rows: 3rem 1fr 3rem;
+  grid-template-rows: 3rem 1fr 3rem 1rem;
+  column-gap: 0.5rem;
+  row-gap: 0.5rem;
   font-size: 1rem;
+  padding: 0.8rem;
   align-items: center;
   justify-items: start;
   text-transform: uppercase;
   overflow: hidden;
+  box-sizing: border-box;
 }
 .taskCompleted {
   background-color: rgba(250, 14, 14, 0.356);
@@ -30,8 +45,10 @@
   font-size: 2rem;
   color: rgba(201, 14, 14, 0.8);
   display: flex;
-  text-align: center;
-
+  svg {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
 }
 .title {
   grid-row: 1;
@@ -45,14 +62,15 @@
   grid-row: 2;
   font-size: 0.8rem;
   overflow-y: hidden;
-  padding: 0 2%;
 }
 .date {
-  display: none;
+  grid-row: 4;
+  grid-column: 1/3  ;
 }
 
 .time {
-  display: none;
+  grid-row: 4;
+  grid-column: 3/5;
 }
 .icon {
   border: white 2px solid;
@@ -85,36 +103,37 @@
   grid-row: 3;
   grid-column: 2;
   background-color: green;
+  &:hover,
+  :focus svg {
+    color: green;
+    transform: rotate(30deg);
+    transition: 0.5s;
+  }
 }
-.completed:hover svg {
-  color: green;
-  transform: rotate(30deg);
-  transition: 0.5s;
-}
+
 .more {
   grid-row: 3;
   grid-column: 4;
   background-color: red;
-}
-.more:hover {
-  background-color: white;
-}
-.more:hover svg {
-  color: red;
-  transform: rotate(30deg);
-  transition: 0.5s;
+  &:hover svg {
+    color: red;
+    transform: rotate(30deg);
+    transition: 0.5s;
+  }
+  &:hover {
+    background-color: white;
+  }
 }
 
 .active {
   grid-row: 3;
   grid-column: 2;
   background-color: blue;
-}
-
-.active:hover {
-  color: blue;
-  transform: rotate(-180deg);
-  transition-duration: 0.5s;
+  &:hover {
+    color: blue;
+    transform: rotate(-180deg);
+    transition: 0.5s;
+  }
 }
 
 span.task {
@@ -141,13 +160,13 @@ span.task {
 
 @media only screen and (min-width: 1024px) {
   .task {
-    grid-template-columns: 5% 20% 49% 10% 8% 8%;
+    grid-template-columns: 5% 20% 1fr 10% 8% 8%;
     grid-template-rows: 1fr 1fr;
   }
   .categoryIcon {
     display: inline-block;
     font-size: 2rem;
-  grid-row:1/3 ;
+    grid-row: 1/3;
   }
   .date {
     display: block;
@@ -157,7 +176,6 @@ span.task {
   .active {
     grid-column: 6;
     grid-row: 1/3;
-
   }
 
   .time {
@@ -186,6 +204,5 @@ span.task {
   .more {
     grid-column: 5;
     grid-row: 1/3;
-
   }
 }

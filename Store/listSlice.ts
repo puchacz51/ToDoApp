@@ -1,6 +1,13 @@
-import { createSlice, PayloadAction, nanoid, PrepareAction } from "@reduxjs/toolkit";
+import {
+  createSlice,
+  PayloadAction,
+  nanoid,
+  PrepareAction,
+} from "@reduxjs/toolkit";
 import { sortTasks } from "../utilities/TaskList";
 import { Task, ListSlice, CompletedTask } from "../types";
+import { number } from "yup";
+import { FaTasks } from "react-icons/fa";
 const Datenow = Number(new Date());
 const initialState: ListSlice = {
   quantityOfCurrentTask: 2,
@@ -16,6 +23,7 @@ const initialState: ListSlice = {
       createDate: Datenow - 1000 * 60 * 60 * 24 * 0.8,
       completed: false,
       category: "daily duties",
+      completedDate: null,
     },
     {
       id: nanoid(),
@@ -24,6 +32,7 @@ const initialState: ListSlice = {
       createDate: Datenow - 1000 * 60 * 60 * 24 * 6,
       completed: false,
       category: "school",
+      completedDate: null,
     },
     {
       id: nanoid(),
@@ -32,18 +41,16 @@ const initialState: ListSlice = {
       createDate: Datenow - 1000 * 60 * 60 * 24 * 29,
       completed: false,
       category: "work",
+      completedDate: null,
     },
-  ],
-  completedTask: [
     {
       id: nanoid(),
-      title: "ToDoApp",
-      description: "Create ToDoApp ",
-      createDate: Datenow - 1000 * 60 * 60 * 24 * 34,
-      completedDate: 1390000000000,
+      title: "another task2",
+      description: "another description2",
+      createDate: Datenow - 1000 * 60 * 60 * 24 * 29,
+      completed: false,
       category: "work",
-
-      completed: true,
+      completedDate: Date.now() - 100000,
     },
   ],
 };
@@ -53,80 +60,42 @@ const ListSlice = createSlice({
   initialState,
   reducers: {
     add: {
-      reducer:(state, action: PayloadAction<Task>) => {
-      state.quantityOfCurrentTask++;
-      state.tasks.unshift(action.payload);
+      reducer: (state, action: PayloadAction<Task>) => {
+        state.quantityOfCurrentTask++;
+        state.tasks.unshift(action.payload);
+      },
+      prepare: (task: Omit<Task, "id">) => {
+        return { payload: { id: nanoid(), ...task } };
+      },
     },
-    prepare:(task:Omit<Task,"id">)=>
-    {
-      return {payload:{id:nanoid(),...task}}
-
-    }
-  },
     remove: (state, action: PayloadAction<[string, boolean]>) => {
       const [removedID, removedStatus] = action.payload;
-      if (!removedStatus) {
-        state.quantityOfCurrentTask--;
-        state.tasks = state.tasks.filter(({ id }) => id != removedID);
-      } else {
+      if (removedStatus) {
         state.quantityOfCompletedTask--;
-        state.completedTask = state.completedTask.filter(
-          ({ id }) => id != removedID
-        );
-      }
-    },
-    modify: (state, action: PayloadAction<Task | CompletedTask>) => {
-      const { id, completed } = action.payload;
-
-      if (!completed) {
-        const index = state.tasks.findIndex((task) => task.id === id);
-        state.tasks[index] = action.payload;
-        sortTasks(state.tasks);
       } else {
-        const index = state.tasks.findIndex((task) => task.id === id);
-        state.completedTask[index] = action.payload;
-        sortTasks(state.completedTask);
+        state.quantityOfCurrentTask--;
       }
+      state.tasks = state.tasks.filter(({ id }) => id != removedID);
     },
-    complete: (state, action: PayloadAction<string>) => {
-      state.quantityOfCurrentTask--;
-      state.quantityOfCompletedTask++;
-
-      const compledtask = state.tasks.find(
-        ({ id }) => id == action.payload
-      ) as Task;
-
-      compledtask.completedDate = Date.now();
-      compledtask.completed = true;
-      state.tasks = state.tasks.filter(({ id }) => id !== action.payload);
-      state.completedTask.push(compledtask);
+    modify: (state, action: PayloadAction<Task>) => {
+      const { id } = action.payload;
+      const index = state.tasks.findIndex((task) => task.id === id);
+      state.tasks[index] = action.payload;
+      sortTasks(state.tasks);
     },
-    active: (state, action: PayloadAction<string>) => {
-      state.quantityOfCurrentTask++;
-      state.quantityOfCompletedTask--;
-
-      const activedTask = state.completedTask.find(
-        ({ id }) => id == action.payload
-      ) as Task;
-      delete activedTask.completedDate;
-      state.completedTask = state.completedTask.filter(
-        ({ id }) => id !== action.payload
-      );
-      activedTask.completed = false;
-      state.tasks.push(activedTask);
+    toggleCompleted: (state, action: PayloadAction<string>) => {
+      const id = action.payload;
+      const index = state.tasks.findIndex((task) => task.id === id);
+      state.tasks[index].completedDate
+        ? (state.tasks[index].completedDate = null)
+        : (state.tasks[index].completedDate = Date.now());
     },
     setEditedTask: (state, action: PayloadAction<Task | null>) => {
-      if (action.payload==null) {
+      if (action.payload == null) {
         state.editedTask = null;
         return;
       }
-      if (action.payload.completed) {
-        const id = state.completedTask.findIndex((({id})=>id==action.payload.id ));
-        state.editedTask = state.completedTask[id];
-      } else {
-        const id = state.tasks.findIndex(({ id }) => id == action.payload.id);
-        state.editedTask = state.tasks[id];
-      }
+      state.editedTask = action.payload;
     },
     toggleAddedForm: (state) => {
       state.addedForm = !state.addedForm;
@@ -139,8 +108,7 @@ export const {
   add,
   remove,
   modify,
-  complete,
-  active,
+  toggleCompleted,
   setEditedTask,
   toggleAddedForm,
 } = ListSlice.actions;

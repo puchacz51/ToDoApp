@@ -13,7 +13,7 @@ import { RootState } from "../../Store/Store";
 const FilterTasks: FC<{ categoriesOption: Category[] }> = ({
   categoriesOption,
 }) => {
-  const { selectedCategories} = useSelector(
+  const { selectedCategories } = useSelector(
     (state: RootState) => state.filter
   );
   const [dateNow] = useState(new Date(Date.now()));
@@ -29,17 +29,18 @@ const FilterTasks: FC<{ categoriesOption: Category[] }> = ({
   const categorySelectHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const currentValue = e.currentTarget.value as Category;
     dispatch(toggleCategories(currentValue));
-
   };
   const dateSelectHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const currentValue = Number(e.currentTarget.value);
     dispatch(selectDate(currentValue));
   };
   return (
-    <div className={styles.filter}>
-      <div className={styles.selectOptions}>
+    <div className={styles.filterContainter}>
+      <div className={styles.filterSelect}>
         <select name="category" onChange={(e) => categorySelectHandler(e)}>
-          <option value="">all categories</option>
+          <option className={styles.filter} value="">
+            all
+          </option>
           {categoriesOption.map((cat) => {
             return selectedCategories.includes(cat) ? (
               <option className={styles.checked} value={cat} key={cat}>
@@ -52,12 +53,14 @@ const FilterTasks: FC<{ categoriesOption: Category[] }> = ({
         </select>
         <select name="date" onChange={(e) => dateSelectHandler(e)}>
           <option value={0}>Whenever</option>
-          <option value={new Date().setFullYear(yearNow, monthNow-1, dayNow - 1)}>
+          <option
+            value={new Date().setFullYear(yearNow, monthNow - 1, dayNow - 1)}
+          >
             last day
           </option>
           <option
             value={
-              new Date().setFullYear(yearNow, monthNow-1, dayNow) -
+              new Date().setFullYear(yearNow, monthNow - 1, dayNow) -
               ((dateNow.getDay() + 7) % 8) * 1000 * 60 * 60 * 24
             }
           >

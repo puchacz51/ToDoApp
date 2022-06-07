@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../Store/Store";
 import { toggleAddedForm,add } from "../../Store/listSlice";
 import { Category } from "../../types";
-const AddForm: React.FC = () => {
+const AddForm:React.FC = () => {
   const {  categoriesOption } = useSelector(
     (state: RootState) => state.list
   );
