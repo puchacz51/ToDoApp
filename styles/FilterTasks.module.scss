@@ -1,0 +1,23 @@
+.filterContainter {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  padding: 10px;
+  & select{
+    color: black;
+    font-size: 1.5rem;
+    & option{
+      font-size: 1.5rem;
+      color: black;
+    }
+  }
+}
+.filterSelect {
+  color: blue;
+}
+.checked {
+  color: black;
+  font-weight: 800;
+}
