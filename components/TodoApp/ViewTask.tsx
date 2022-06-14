@@ -1,4 +1,4 @@
-import styles from "../../styles/Viewtask.module.css";
+import styles from "../../styles/ViewTasks.module.scss";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../Store/Store";
