@@ -3,11 +3,7 @@ interface ToDoItemListProps {
   setCompltedTask: Function;
   setEditedTask: Function;
 }
-// interface ToDoItemListCompltedProps {
-//   completedTaskList: CompletedTask[];
-//   setEditedTask: Function;
-//   setActivedTask: Function;
-// }
+
 type Category = "gym" | "school" | "daily duties" | "work" | "others";
 type Task = {
   id: string;

@@ -4,27 +4,28 @@ import styles from "../../styles/Viewtask.module.css";
 import { IoMdAddCircle } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../Store/Store";
-import { toggleAddedForm,add } from "../../Store/listSlice";
+import { toggleAddedForm, add } from "../../Store/listSlice";
 import { Category } from "../../types";
-const AddForm:React.FC = () => {
-  const {  categoriesOption } = useSelector(
-    (state: RootState) => state.list
-  );
+const AddForm: React.FC = () => {
+  const { categoriesOption } = useSelector((state: RootState) => state.list);
   const dispatch = useDispatch();
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
-  const [categoryOption, setCategoryOption] = useState<Category|null>(null);
+  const [categoryOption, setCategoryOption] = useState<Category | null>(null);
   const addTask = () => {
-    if(title.length>0 && description.length>0 && categoryOption!=null){
-    dispatch(add({
-      title,
-      description,
-      category: categoryOption,
-      createDate: Date.now(),
-      completed: false,
-    }))
-    dispatch(toggleAddedForm());
-  }
+    if (title.length > 0 && description.length > 0 && categoryOption != null) {
+      dispatch(
+        add({
+          title,
+          description,
+          category: categoryOption,
+          createDate: Date.now(),
+          completed: false,
+          completedDate: null,
+        })
+      );
+      dispatch(toggleAddedForm());
+    }
   };
   return (
     <div className={styles.view}>
@@ -57,7 +58,7 @@ const AddForm:React.FC = () => {
           name="categories"
         >
           <option value="" selected>
-            SELECT 
+            SELECT
           </option>
           {categoriesOption.map((category) => {
             return (
