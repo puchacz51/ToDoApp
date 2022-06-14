@@ -1,6 +1,6 @@
 import { useState } from "react";
 import React from "react";
-import styles from "../../styles/Viewtask.module.scss";
+import styles from "../../styles/Viewtask.module.css";
 import { IoMdAddCircle } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../Store/Store";
