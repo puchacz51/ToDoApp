@@ -40,6 +40,7 @@ const ViewTask: React.FC = () => {
         description,
         createDate: editedTask.createDate,
         completed: editedTask.completed,
+        completedDate: editedTask.completedDate ? Date.now() : null,
       })
     );
 

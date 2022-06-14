@@ -9,6 +9,7 @@ import { FaSchool, FaSun, FaSuitcase, FaCheck } from "react-icons/fa";
 import { BiTask } from "react-icons/bi";
 import { RootState } from "../../Store/Store";
 import { VscDebugRestart } from "react-icons/vsc";
+import { Task } from "../../types";
 // import { Category } from "../types";
 
 const ToDoItemsList: FC = () => {
