@@ -19,16 +19,7 @@ type Task = {
   completedDate: number | null;
   category: Category;
 };
-// type CompletedTask = {
-//   id: string;
-//   title: string;
-//   description: string;
-//   createDate: number;
-//   completed: boolean;
-//   lastModifiedDate?: number;
-//   category: Category;
-//   completedDate?: number;
-// };
+
 interface ListSlice {
   categoriesOption: string[];
   addedForm: boolean;
@@ -68,12 +59,10 @@ interface TaskFilter {
 export type {
   ToDoItemListProps,
   Task,
-  // CompletedTask,
   ListSlice,
   FilterOptions,
   ViewTaskProps,
   AddFormProps,
-  // ToDoItemListCompltedProps,
   Category,
   TaskFilter,
   TaskStatus,

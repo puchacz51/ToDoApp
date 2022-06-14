@@ -5,7 +5,7 @@ import {
   PrepareAction,
 } from "@reduxjs/toolkit";
 import { sortTasks } from "../utilities/TaskList";
-import { Task, ListSlice, CompletedTask } from "../types";
+import { Task, ListSlice } from "../types";
 import { number } from "yup";
 import { FaTasks } from "react-icons/fa";
 const Datenow = Number(new Date());
