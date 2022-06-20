@@ -89,6 +89,7 @@ const ListSlice = createSlice({
       state.tasks[index].completedDate
         ? (state.tasks[index].completedDate = null)
         : (state.tasks[index].completedDate = Date.now());
+        sortTasks(state.tasks);
     },
     setEditedTask: (state, action: PayloadAction<Task | null>) => {
       if (action.payload == null) {

@@ -2,6 +2,9 @@ import "../styles/globals.css";
 import Layout from "../components/layout";
 import type { AppProps } from "next/app";
 import React from "react";
+import { Provider } from "react-redux";
+import { store, pStore } from "../Store/Store";
+import { PersistGate } from "redux-persist/integration/react";
 /**
  *
  * This is the App page
@@ -9,10 +12,14 @@ import React from "react";
  */
 function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <Layout>
-      {" "}
-      <Component {...pageProps} />
-    </Layout>
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={pStore}>
+        <Layout>
+          {" "}
+          <Component {...pageProps} />
+        </Layout>
+      </PersistGate>
+    </Provider>
   );
 }
 
