@@ -14,7 +14,6 @@ const SelectTasks: React.FC = () => {
   const { filter, list } = useSelector((state: RootState) => state);
   const [filterHidden, setFilterHidden] = useState<boolean>(false);
   const { editedTask, categoriesOption, addedForm } = list;
-  const { selectedStatus } = filter;
   const dispatch = useDispatch();
   return (
     <div className={styles.tasks}>
@@ -27,15 +26,10 @@ const SelectTasks: React.FC = () => {
           +
         </button>
       </div>
-      <button
-        className={styles.FilterBtn}
-        onClick={() => setFilterHidden(!filterHidden)}
-      ></button>
-      {filterHidden && (
-        <FilterTasks
-          categoriesOption={categoriesOption as Category[]}
-        ></FilterTasks>
-      )}
+
+      <FilterTasks
+        categoriesOption={categoriesOption as Category[]}
+      ></FilterTasks>
       <ToDoItemsList />
 
       {editedTask && <ViewTask />}

@@ -8,6 +8,7 @@ import thunk from "redux-thunk";
 const pListConfig = {
   key: "list",
   storage: storage,
+  blacklist: ["editedTask", "addedForm"],
 };
 const pFilterConfig = {
   key: "filer",

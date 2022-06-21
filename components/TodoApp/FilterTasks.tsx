@@ -36,14 +36,13 @@ const FilterTasks: FC<{ categoriesOption: Category[] }> = ({
   };
   return (
     <div className={styles.filterContainter}>
-      <div className={styles.filterSelect}>
         <select name="category" onChange={(e) => categorySelectHandler(e)}>
-          <option className={styles.filter} value="">
+          <option className={styles.filter} defaultChecked value="">
             all
           </option>
           {categoriesOption.map((cat) => {
             return selectedCategories.includes(cat) ? (
-              <option className={styles.checked} value={cat} key={cat}>
+              <option className={styles.checked}  value={cat} key={cat}>
                 {cat}
               </option>
             ) : (
@@ -83,7 +82,6 @@ const FilterTasks: FC<{ categoriesOption: Category[] }> = ({
           <option value="active">active</option>
           <option value="completed">completed</option>
         </select>
-      </div>
       <div className={styles.selectedOptions}></div>
     </div>
   );
