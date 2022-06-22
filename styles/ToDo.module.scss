@@ -14,12 +14,12 @@
 }
 .tasks {
   padding: 0 1rem;
-  background-color: rgba(148, 248, 7, 0.292);
+  background-color: #0093e9;
+  background-image: linear-gradient(5deg, #0093e9 0%, #80d0c7 100%);
 }
 .task {
-  background-color: white;
-  border: solid 1px rgba(0, 0, 0, 0.678);
-  border-radius: 10% 10% 10% 10%;
+  background-color: rgba(252, 252, 252, 0.614);
+  border-radius: rem;
   margin: 5px 0;
   padding: 0 0.5rem 0 1rem;
   display: grid;
@@ -36,12 +36,13 @@
   box-sizing: border-box;
 }
 .taskCompleted {
-  background-color: rgba(250, 14, 14, 0.356);
+  background-color: rgba(84, 28, 28, 0.584);
+  color: #fff;
   & .categoryIcon {
-    color: rgb(110, 60, 249);
+    color: rgb(156, 126, 240);
   }
   & .completed {
-    background-color: rgb(110, 60, 249);
+    background-color:rgb(156, 126, 240);
     &:hover {
       color: rgb(110, 60, 249);
       border-color: rgb(110, 60, 249);
@@ -75,14 +76,15 @@
   font-size: 0.9rem;
   overflow-y: hidden;
 }
-.date {
-  grid-row: 4;
-  grid-column: 1/3;
-}
+// .date {
+//   grid-row: 4;
+//   grid-column: 2/4;
+// }
 
 .time {
   grid-row: 4;
-  grid-column: 3/5;
+  grid-column: 1/5;
+  text-align: center;
 }
 .icon {
   font-size: 2rem;
@@ -103,6 +105,8 @@
   font-size: 3rem;
   width: 4rem;
   height: 4rem;
+  border-radius: 10%;
+  
   &:hover {
     background-color: white;
     color: red;
@@ -114,7 +118,9 @@
 .completed {
   grid-row: 3;
   grid-column: 1/3;
-  background-color: green;
+  background-color: rgba(41, 227, 41, 0.849);
+  border-radius: 1rem;
+
   &:hover,
   :focus svg {
     color: green;
@@ -126,7 +132,8 @@
 .more {
   grid-row: 3;
   grid-column: 4/6;
-  background-color: red;
+  background-color: rgb(64, 137, 247);
+  border-radius: 1rem;
   &:hover svg {
     color: red;
     transition: 0.5s;
@@ -185,11 +192,7 @@ span.task {
     font-size: 2rem;
     grid-row: 1/3;
   }
-  .date {
-    display: block;
-    grid-row: 1;
-    grid-column: 4;
-  }
+
   .active {
     grid-column: 6;
     grid-row: 1/3;
@@ -198,7 +201,7 @@ span.task {
   .time {
     display: block;
 
-    grid-row: 2;
+    grid-row: 1/3;
     grid-column: 4;
   }
   .title {

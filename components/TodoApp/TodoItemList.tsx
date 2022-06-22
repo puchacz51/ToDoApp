@@ -6,6 +6,7 @@ import styles from "../../styles/ToDo.module.scss";
 import { BsFileText } from "react-icons/bs";
 import { CgGym } from "react-icons/cg";
 import { FaSchool, FaSun, FaSuitcase, FaCheck } from "react-icons/fa";
+import moment from "moment";
 import { BiTask } from "react-icons/bi";
 import { RootState } from "../../Store/Store";
 import { VscDebugRestart } from "react-icons/vsc";
@@ -19,7 +20,6 @@ const ToDoItemsList: FC = () => {
   const { tasks } = useSelector((state: RootState) => state.list);
   const dispatch = useDispatch();
   const [currentList, setCurrentList] = React.useState<Task[]>(tasks);
-
   useEffect(() => {
     const filteredList = tasks.filter(
       (task) =>
@@ -45,6 +45,8 @@ const ToDoItemsList: FC = () => {
           hour: "2-digit",
           minute: "2-digit",
         });
+        const relativeDate = moment(createDate).fromNow();
+
         return (
           <>
             <div className={classList} key={id}>
@@ -55,8 +57,7 @@ const ToDoItemsList: FC = () => {
 
               <p className={styles.description}>{`${task.description}`}</p>
 
-              <span className={styles.date}>added: {displayDate}</span>
-              <span className={styles.time}> at {time}</span>
+              <span className={styles.time}> created {relativeDate}</span>
               <button
                 className={`${styles.more} ${styles.icon}`}
                 onClick={() => dispatch(setEditedTask(task))}
