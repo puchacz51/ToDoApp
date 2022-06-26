@@ -47,7 +47,7 @@ interface AddFormProps {
 type TaskStatus = "both" | "active" | "completed";
 
 interface TaskFilter {
-  selectedCategories: Category[];
+  selectedCategories: Category[] | "all";
   selectedStatus: TaskStatus;
   selectedDate: Number;
 }

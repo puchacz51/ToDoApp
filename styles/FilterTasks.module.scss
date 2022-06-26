@@ -1,23 +1,74 @@
 .filterContainter {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  flex-wrap: wrap;
   width: 100%;
   height: 100%;
   padding: 10px;
-  & select{
+  & select {
     color: black;
-    font-size: 1.5rem;
-    & option{
+    font-size: 0.8rem;
+    width: fit-content;
+    & option {
       font-size: 1.5rem;
       color: black;
     }
   }
 }
-.filterSelect {
-  color: blue;
-}
-.checked {
-  color: black;
-  font-weight: 800;
+.categoryFilter {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 1rem;
+  background-color: rgba(199, 192, 192, 0.275);
+  & .categoryButton {
+    display: flex;
+    background-color: transparent;
+    position: relative;
+    flex-direction: column;
+    justify-content: center;
+    border-radius: 4rem;
+    align-items: center;
+    padding: 2px 5px;
+    border: none;
+    box-shadow: none;
+    & svg {
+      font-size: 2.5rem;
+      color: green;
+    }
+    & span {
+      visibility: hidden;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      font-size: 0.7rem;
+      color: black;
+      font-weight: 600;
+      display: block;
+      width: max-content;
+      color: rgb(255, 255, 255);
+      padding: 2px;
+      border-radius: 3px;
+      background-color: rgba(0, 0, 0, 0.797);
+      transform: translate(-50%, 50%);
+    }
+    &:hover {
+    background-color: rgba(255, 255, 255, 0.579);
+
+      & svg {
+        color: green;
+      }
+      & span {
+        visibility: visible;
+        color: white;
+      }
+    }
+  }
+  & .selected{
+    background-color: rgba(236, 25, 25, 0.579);
+    & svg {
+      color: green;
+    }
+   
+  }
 }

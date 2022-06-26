@@ -1,8 +1,15 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { TaskStatus, TaskFilter, Category } from "../types";
 
+const categories = [
+  "gym",
+  "work",
+  "daily duties",
+  "others",
+  "school",
+] as Category[];
 const initialState: TaskFilter = {
-  selectedCategories: ["gym", "work", "daily duties", "others", "school"],
+  selectedCategories: categories,
   selectedStatus: "both",
   selectedDate: 0,
 };
@@ -24,7 +31,39 @@ const filterSlice = createSlice({
       state.selectedStatus = action.payload;
     },
     selectDate: (state, action: PayloadAction<number>) => {
-      state.selectedDate = action.payload;
+      const currentDate = new Date();
+      const currentDay = currentDate.getDay();
+      const currentMonth = currentDate.getMonth();
+      const currentYear = currentDate.getFullYear();
+      switch (action.payload) {
+        case 0:
+          state.selectedDate = new Date(
+            currentYear,
+            currentMonth,
+            currentDay
+          ).getTime();
+          break;
+        case 1:
+          state.selectedDate = new Date(
+            currentYear,
+            currentMonth,
+            currentDay - 1
+          ).getTime();
+          break;
+        case 2:
+          state.selectedDate = new Date(
+            currentYear,
+            currentMonth,
+            currentDay - 7
+          ).getTime();
+          break;
+        case 3:
+          state.selectedDate = new Date(
+            currentYear,
+            currentMonth,
+            currentDay - 30
+          ).getTime();
+      }
     },
   },
 });

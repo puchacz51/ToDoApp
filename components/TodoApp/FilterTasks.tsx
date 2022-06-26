@@ -1,7 +1,8 @@
 import React, { FC, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 // import {FaRegCheckSquare} from "react-icons/fa"
-import styles from "../../styles/FilterTasks.module.css";
+import styles from "../../styles/FilterTasks.module.scss";
+import { SwitchIcon } from "./AppIcons";
 import { Category, TaskStatus } from "../../types";
 import {
   toggleCategories,
@@ -16,73 +17,50 @@ const FilterTasks: FC<{ categoriesOption: Category[] }> = ({
   const { selectedCategories } = useSelector(
     (state: RootState) => state.filter
   );
-  const [dateNow] = useState(new Date(Date.now()));
-  const [[dayNow, monthNow, yearNow]] = useState(
-    dateNow
-      .toLocaleDateString()
-      .split(".")
-      .map((v) => Number(v))
-  );
 
   const dispatch = useDispatch();
 
-  const categorySelectHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const currentValue = e.currentTarget.value as Category;
-    dispatch(toggleCategories(currentValue));
+  const categorySelectHandler = (selectedCategory: Category) => {
+    dispatch(toggleCategories(selectedCategory));
   };
   const dateSelectHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const currentValue = Number(e.currentTarget.value);
-    dispatch(selectDate(currentValue));
+    dispatch(selectDate(Number(e.target.value)));
   };
   return (
     <div className={styles.filterContainter}>
-        <select name="category" onChange={(e) => categorySelectHandler(e)}>
-          <option className={styles.filter} defaultChecked value="">
-            all
-          </option>
-          {categoriesOption.map((cat) => {
-            return selectedCategories.includes(cat) ? (
-              <option className={styles.checked}  value={cat} key={cat}>
-                {cat}
-              </option>
-            ) : (
-              <option value={cat}> {cat}</option>
-            );
-          })}
-        </select>
-        <select name="date" onChange={(e) => dateSelectHandler(e)}>
-          <option value={0}>Whenever</option>
-          <option
-            value={new Date().setFullYear(yearNow, monthNow - 1, dayNow - 1)}
-          >
-            last day
-          </option>
-          <option
-            value={
-              new Date().setFullYear(yearNow, monthNow - 1, dayNow) -
-              ((dateNow.getDay() + 7) % 8) * 1000 * 60 * 60 * 24
+      <h4>categories</h4>
+      <div className={styles.categoryFilter}>
+        {categoriesOption.map((category) => (
+          <button
+            className={
+              selectedCategories.includes(category)
+                ? `${styles.categoryButton} ${styles.selected}`
+                : styles.categoryButton
             }
+            onClick={() => categorySelectHandler(category)}
+            key={category}
           >
-            last week
-          </option>
-          <option value={new Date().setFullYear(yearNow, monthNow - 1, 0)}>
-            last month
-          </option>
-          <option value={new Date().setFullYear(yearNow, 0, 0)}>
-            last year
-          </option>
-        </select>
-        <select
-          name="date"
-          onChange={(e) =>
-            dispatch(toggleStatus(e.currentTarget.value as TaskStatus))
-          }
-        >
-          <option value="both">both</option>
-          <option value="active">active</option>
-          <option value="completed">completed</option>
-        </select>
-      <div className={styles.selectedOptions}></div>
+            <SwitchIcon option={category} />
+            <span>{category}</span>
+          </button>
+        ))}
+      </div>
+      <h4>Date</h4>
+      <div className={styles.dateFilter}>
+        <div className={styles.dateSelect}>
+          <select
+            name="date"
+            className={styles.dateSelect}
+            onChange={dateSelectHandler}
+          >
+            <option value="0">All</option>
+            <option value="1">Today</option>
+            <option value="2">This week</option>
+            <option value="3">This month</option>
+            <option value="4">This year</option>
+          </select>
+        </div>
+      </div>
     </div>
   );
 };

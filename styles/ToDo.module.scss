@@ -34,6 +34,7 @@
   text-transform: uppercase;
   overflow: hidden;
   box-sizing: border-box;
+  border-radius: 1rem;
 }
 .taskCompleted {
   background-color: rgba(84, 28, 28, 0.584);
@@ -76,15 +77,11 @@
   font-size: 0.9rem;
   overflow-y: hidden;
 }
-// .date {
-//   grid-row: 4;
-//   grid-column: 2/4;
-// }
 
 .time {
   grid-row: 4;
-  grid-column: 1/5;
-  text-align: center;
+  text-align: right;
+  grid-column: 1/6;
 }
 .icon {
   font-size: 2rem;
@@ -164,7 +161,10 @@ span.task {
     grid-template-rows: 4rem 1fr 4rem;
   }
   .categoryIcon {
-    font-size: 3rem;
+    & svg {
+      width: 3rem;
+      height: 3rem;
+    }
   }
   .title {
     font-size: 2rem;
@@ -183,6 +183,7 @@ span.task {
     border-radius: 50%;
     padding: 0.5rem;
     font-size: 2rem;
+    ;
   }
   .task {
     grid-template-columns: 5% 20% 1fr 6rem 5rem 5rem;
