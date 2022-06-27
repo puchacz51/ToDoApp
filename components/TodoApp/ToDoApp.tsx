@@ -8,11 +8,9 @@ import ToDoItemsList from "./TodoItemList";
 import styles from "../../styles/ToDo.module.scss";
 import AddForm from "./AddForm";
 import ViewTask from "./ViewTask";
-import { useState } from "react";
 
 const SelectTasks: React.FC = () => {
-  const { filter, list } = useSelector((state: RootState) => state);
-  const [filterHidden, setFilterHidden] = useState<boolean>(false);
+  const { list } = useSelector((state: RootState) => state);
   const { editedTask, categoriesOption, addedForm } = list;
   const dispatch = useDispatch();
   return (
