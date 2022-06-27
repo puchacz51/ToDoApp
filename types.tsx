@@ -50,6 +50,7 @@ interface TaskFilter {
   selectedCategories: Category[] | "all";
   selectedStatus: TaskStatus;
   selectedDate: Number;
+  filterVisibility: boolean;
 }
 
 export type {

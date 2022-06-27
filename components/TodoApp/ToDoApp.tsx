@@ -26,10 +26,10 @@ const SelectTasks: React.FC = () => {
           +
         </button>
       </div>
-
       <FilterTasks
         categoriesOption={categoriesOption as Category[]}
       ></FilterTasks>
+
       <ToDoItemsList />
 
       {editedTask && <ViewTask />}

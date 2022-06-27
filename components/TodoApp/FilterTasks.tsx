@@ -8,13 +8,14 @@ import {
   toggleCategories,
   toggleStatus,
   selectDate,
+  toggleFilterVisibility,
 } from "../../Store/filterSlice";
 import { RootState } from "../../Store/Store";
 // import { FilterOptions ,categoriesOptions} from "../../types";
 const FilterTasks: FC<{ categoriesOption: Category[] }> = ({
   categoriesOption,
 }) => {
-  const { selectedCategories } = useSelector(
+  const { selectedCategories, filterVisibility } = useSelector(
     (state: RootState) => state.filter
   );
 
@@ -26,42 +27,56 @@ const FilterTasks: FC<{ categoriesOption: Category[] }> = ({
   const dateSelectHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
     dispatch(selectDate(Number(e.target.value)));
   };
+  const statusSelectHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    console.log(e.target.value);
+
+    dispatch(toggleStatus(e.target.value as TaskStatus));
+  };
+  const filterVisibilityHandler = () => {
+    dispatch(toggleFilterVisibility());
+  };
   return (
-    <div className={styles.filterContainter}>
-      <h4>categories</h4>
-      <div className={styles.categoryFilter}>
-        {categoriesOption.map((category) => (
-          <button
-            className={
-              selectedCategories.includes(category)
-                ? `${styles.categoryButton} ${styles.selected}`
-                : styles.categoryButton
-            }
-            onClick={() => categorySelectHandler(category)}
-            key={category}
-          >
-            <SwitchIcon option={category} />
-            <span>{category}</span>
-          </button>
-        ))}
-      </div>
-      <h4>Date</h4>
-      <div className={styles.dateFilter}>
-        <div className={styles.dateSelect}>
-          <select
-            name="date"
-            className={styles.dateSelect}
-            onChange={dateSelectHandler}
-          >
-            <option value="0">All</option>
-            <option value="1">Today</option>
-            <option value="2">This week</option>
-            <option value="3">This month</option>
-            <option value="4">This year</option>
-          </select>
+    <>
+      <div
+        className={`${styles.filterContainter} ${
+          filterVisibility || styles.filterVisible
+        }`}
+      >
+        <h4>categories</h4>
+        <div className={styles.categoryFilter}>
+          {categoriesOption.map((category) => (
+            <button
+              className={
+                selectedCategories.includes(category)
+                  ? `${styles.categoryButton} ${styles.selected}`
+                  : styles.categoryButton
+              }
+              onClick={() => categorySelectHandler(category)}
+              key={category}
+            >
+              <SwitchIcon option={category} />
+              <span>{category}</span>
+            </button>
+          ))}
+        </div>
+        <h4>Date</h4>
+        <div className={styles.dateFilter}>
+          <div className={styles.dateSelect}>
+            <span>today</span>
+            <input name="date" type="radio" value="1" />
+            <span>yesterday</span>
+            <input name="date" type="radio" value={2} />
+            <span>last week</span>
+            <input name="date" type="radio" value={3} />
+            <span>last month</span>
+            <input name="date" type="radio" value={4} />
+          </div>
         </div>
       </div>
-    </div>
+      <button onClick={filterVisibilityHandler}>
+        {filterVisibility ? "Filer Task" : "Close Filer"}
+      </button>
+    </>
   );
 };
 

@@ -17,7 +17,6 @@ const ToDoItemsList: FC = () => {
   const { tasks } = useSelector((state: RootState) => state.list);
   const dispatch = useDispatch();
   const [currentList, setCurrentList] = React.useState<Task[]>(tasks);
-  console.log(selectedDate);
 
   useEffect(() => {
     const filteredList = tasks.filter(
@@ -32,7 +31,6 @@ const ToDoItemsList: FC = () => {
 
   return (
     <>
-      <h2>quantity of tasks: {tasks.length}</h2>
       {currentList.map((task, i) => {
         const { id, title, createDate, category } = task;
         const classList = task.completedDate

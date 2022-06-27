@@ -16,7 +16,6 @@ header {
   padding: 0.5rem;
   /* background-image: linear-gradient(180deg, #0093e9 0%, #80d0c7 100%); */
   background-color: #85ffbd;
-
 }
 h1 {
   font-size: 3rem;
@@ -30,7 +29,6 @@ h1 {
   font-style: oblique;
   background-color: #85ffbd;
   background-image: linear-gradient(45deg, #85ffbd 0%, #fffb7d 100%);
-  
 }
 
 footer {
@@ -57,8 +55,7 @@ button:hover {
   box-shadow: none;
 }
 
-textarea,
-input {
+textarea {
   resize: none;
   height: 100%;
 }

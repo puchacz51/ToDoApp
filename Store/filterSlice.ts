@@ -12,6 +12,7 @@ const initialState: TaskFilter = {
   selectedCategories: categories,
   selectedStatus: "both",
   selectedDate: 0,
+  filterVisibility: false,
 };
 const filterSlice = createSlice({
   name: "Filter",
@@ -65,8 +66,15 @@ const filterSlice = createSlice({
           ).getTime();
       }
     },
+    toggleFilterVisibility: (state) => {
+      state.filterVisibility = !state.filterVisibility;
+    },
   },
 });
 export default filterSlice.reducer;
-export const { toggleCategories, toggleStatus, selectDate } =
-  filterSlice.actions;
+export const {
+  toggleCategories,
+  toggleStatus,
+  selectDate,
+  toggleFilterVisibility,
+} = filterSlice.actions;
