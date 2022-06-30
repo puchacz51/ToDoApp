@@ -24,14 +24,18 @@ const FilterTasks: FC<{ categoriesOption: Category[] }> = ({
   const categorySelectHandler = (selectedCategory: Category) => {
     dispatch(toggleCategories(selectedCategory));
   };
-  const dateSelectHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    dispatch(selectDate(Number(e.target.value)));
+  const dateSelectHandler = (days: Number) => {
+    dispatch(selectDate(Number(days)));
   };
-  const statusSelectHandler = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const dataInputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     console.log(e.target.value);
 
-    dispatch(toggleStatus(e.target.value as TaskStatus));
+    dispatch(selectDate(new Date(e.target.value).getTime()));
   };
+  const statusSelectHandler = (status: TaskStatus) => {
+    dispatch(toggleStatus(status));
+  };
+
   const filterVisibilityHandler = () => {
     dispatch(toggleFilterVisibility());
   };
@@ -61,16 +65,46 @@ const FilterTasks: FC<{ categoriesOption: Category[] }> = ({
         </div>
         <h4>Date</h4>
         <div className={styles.dateFilter}>
-          <div className={styles.dateSelect}>
-            <span>today</span>
-            <input name="date" type="radio" value="1" />
-            <span>yesterday</span>
-            <input name="date" type="radio" value={2} />
-            <span>last week</span>
-            <input name="date" type="radio" value={3} />
-            <span>last month</span>
-            <input name="date" type="radio" value={4} />
-          </div>
+          <button
+            className={styles.dateButton}
+            onClick={() => dateSelectHandler(0)}
+          >
+            last day
+          </button>
+          <button
+            className={styles.dateButton}
+            onClick={() => dateSelectHandler(1)}
+          >
+            last week
+          </button>
+          <button
+            className={styles.dateButton}
+            onClick={() => dateSelectHandler(2)}
+          >
+            last month
+          </button>
+          <button
+            className={styles.dateButton}
+            onClick={() => dateSelectHandler(3)}
+          >
+            last year
+          </button>
+          <input type="date" onChange={dataInputHandler} />
+        </div>
+        <div className={styles.statusFilter}>
+          <h4>Status</h4>
+          <button
+            className={styles.statusButton}
+            onClick={() => statusSelectHandler("active")}
+          >
+            active
+          </button>
+          <button
+            className={styles.statusButton}
+            onClick={() => statusSelectHandler("completed")}
+          >
+            completed
+          </button>
         </div>
       </div>
       <button onClick={filterVisibilityHandler}>

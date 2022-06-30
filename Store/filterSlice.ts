@@ -33,37 +33,33 @@ const filterSlice = createSlice({
     },
     selectDate: (state, action: PayloadAction<number>) => {
       const currentDate = new Date();
-      const currentDay = currentDate.getDay();
+      const currentDay = currentDate.getDate();
       const currentMonth = currentDate.getMonth();
       const currentYear = currentDate.getFullYear();
+      const dayInWeek = currentDate.getDay() + 1;
+
       switch (action.payload) {
         case 0:
-          state.selectedDate = new Date(
-            currentYear,
-            currentMonth,
-            currentDay
-          ).getTime();
-          break;
-        case 1:
           state.selectedDate = new Date(
             currentYear,
             currentMonth,
             currentDay - 1
           ).getTime();
           break;
+        case 1:
+          state.selectedDate =
+            new Date(currentYear, currentMonth, currentDay).getTime() -
+            dayInWeek * 24 * 60 * 60 * 1000;
+          break;
         case 2:
-          state.selectedDate = new Date(
-            currentYear,
-            currentMonth,
-            currentDay - 7
-          ).getTime();
+          state.selectedDate = new Date(currentYear, currentMonth, 0).getTime();
           break;
         case 3:
-          state.selectedDate = new Date(
-            currentYear,
-            currentMonth,
-            currentDay - 30
-          ).getTime();
+          state.selectedDate = new Date(currentYear - 1, 0, 0).getTime();
+          break;
+        default:
+          state.selectedDate = action.payload;
+          break;
       }
     },
     toggleFilterVisibility: (state) => {
