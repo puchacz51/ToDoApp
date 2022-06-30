@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC } from "react";
 import { useDispatch, useSelector } from "react-redux";
 // import {FaRegCheckSquare} from "react-icons/fa"
 import styles from "../../styles/FilterTasks.module.scss";

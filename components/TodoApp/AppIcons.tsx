@@ -1,9 +1,8 @@
 import { CgGym } from "react-icons/cg";
 import { FaSchool, FaSun, FaSuitcase } from "react-icons/fa";
 import { BiTask } from "react-icons/bi";
-import { ReactNode } from "react";
 import { Category } from "../../types";
-export const SwitchIcon: ReactNode<{ option: Category }> = (props) => {
+export const SwitchIcon: React.FC<{ option: Category }> = (props) => {
   const category: string = props.option;
 
   let icon: JSX.Element;
