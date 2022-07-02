@@ -42,17 +42,6 @@ option {
   font-size: 18px;
   cursor: pointer;
 }
-button {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  box-shadow: inset 0 0 0.5em 9px #0000003d;
-}
-
-button:hover {
-  box-shadow: none;
-}
 
 textarea {
   resize: none;

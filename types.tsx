@@ -26,7 +26,7 @@ interface ListSlice {
 }
 interface FilterOptions {
   complted: Boolean;
-  category: String;
+  category: [String];
   date: [number, number];
 }
 
@@ -48,8 +48,8 @@ type TaskStatus = "both" | "active" | "completed";
 
 interface TaskFilter {
   selectedCategories: Category[];
-  selectedStatus: TaskStatus;
-  selectedDate: Number;
+  selectedStatus: TaskStatus[];
+  selectedDate: [Number,Number];
   filterVisibility: boolean;
 }
 

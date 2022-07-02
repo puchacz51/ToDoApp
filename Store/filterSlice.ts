@@ -10,7 +10,7 @@ const categories = [
 ] as Category[];
 const initialState: TaskFilter = {
   selectedCategories: categories,
-  selectedStatus: "both",
+  selectedStatus: ["active", "completed"],
   selectedDate: 0,
   filterVisibility: false,
 };
@@ -29,36 +29,45 @@ const filterSlice = createSlice({
           ]);
     },
     toggleStatus: (state, action: PayloadAction<TaskStatus>) => {
-      state.selectedStatus = action.payload;
+      state.selectedStatus.includes(action.payload)
+        ? (state.selectedStatus = state.selectedStatus.filter(
+            (status) => status != action.payload
+          ))
+        : (state.selectedStatus = [...state.selectedStatus, action.payload]);
     },
-    selectDate: (state, action: PayloadAction<number>) => {
+    selectDate: (state, action: PayloadAction<[number, number]>) => {
       const currentDate = new Date();
       const currentDay = currentDate.getDate();
       const currentMonth = currentDate.getMonth();
       const currentYear = currentDate.getFullYear();
       const dayInWeek = currentDate.getDay() + 1;
-
-      switch (action.payload) {
-        case 0:
-          state.selectedDate = new Date(
-            currentYear,
-            currentMonth,
-            currentDay - 1
-          ).getTime();
-          break;
+      if (action.payload[0] === state.selectedDate[1]) {
+        state.selectedDate = [0, 0];
+        return;
+      }
+      switch (action.payload[0]) {
         case 1:
-          state.selectedDate =
-            new Date(currentYear, currentMonth, currentDay).getTime() -
-            dayInWeek * 24 * 60 * 60 * 1000;
+          state.selectedDate = [
+            new Date(currentYear, currentMonth, currentDay - 1).getTime(),
+            1,
+          ];
           break;
         case 2:
-          state.selectedDate = new Date(currentYear, currentMonth, 0).getTime();
+          state.selectedDate = [
+            new Date(currentYear, currentMonth, currentDay).getTime() -
+              dayInWeek * 24 * 60 * 60 * 1000,
+            2,
+          ];
           break;
         case 3:
-          state.selectedDate = new Date(currentYear - 1, 0, 0).getTime();
+          state.selectedDate = [
+            new Date(currentYear, currentMonth, 0).getTime(),
+            3,
+          ];
           break;
+
         default:
-          state.selectedDate = action.payload;
+          state.selectedDate = [action.payload[1], 4];
           break;
       }
     },

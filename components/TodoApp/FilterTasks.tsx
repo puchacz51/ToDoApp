@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 // import {FaRegCheckSquare} from "react-icons/fa"
 import styles from "../../styles/FilterTasks.module.scss";
@@ -11,27 +11,20 @@ import {
   toggleFilterVisibility,
 } from "../../Store/filterSlice";
 import { RootState } from "../../Store/Store";
-// import { FilterOptions ,categoriesOptions} from "../../types";
+import { number } from "yup";
+
 const FilterTasks: FC<{ categoriesOption: Category[] }> = ({
   categoriesOption,
 }) => {
-  const { selectedCategories, filterVisibility } = useSelector(
+  const { selectedCategories, filterVisibility, selectedDate } = useSelector(
     (state: RootState) => state.filter
   );
-
   const dispatch = useDispatch();
 
   const categorySelectHandler = (selectedCategory: Category) => {
     dispatch(toggleCategories(selectedCategory));
   };
-  const dateSelectHandler = (days: Number) => {
-    dispatch(selectDate(Number(days)));
-  };
-  const dataInputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.value);
 
-    dispatch(selectDate(new Date(e.target.value).getTime()));
-  };
   const statusSelectHandler = (status: TaskStatus) => {
     dispatch(toggleStatus(status));
   };
@@ -40,13 +33,13 @@ const FilterTasks: FC<{ categoriesOption: Category[] }> = ({
     dispatch(toggleFilterVisibility());
   };
   return (
-    <>
+    <div className={styles.filterWrapper}>
       <div
         className={`${styles.filterContainter} ${
           filterVisibility || styles.filterVisible
         }`}
       >
-        <h4>categories</h4>
+        <h4 className={styles.categoryFilterTitle}>categories</h4>
         <div className={styles.categoryFilter}>
           {categoriesOption.map((category) => (
             <button
@@ -63,44 +56,18 @@ const FilterTasks: FC<{ categoriesOption: Category[] }> = ({
             </button>
           ))}
         </div>
-        <h4>Date</h4>
-        <div className={styles.dateFilter}>
-          <button
-            className={styles.dateButton}
-            onClick={() => dateSelectHandler(0)}
-          >
-            last day
-          </button>
-          <button
-            className={styles.dateButton}
-            onClick={() => dateSelectHandler(1)}
-          >
-            last week
-          </button>
-          <button
-            className={styles.dateButton}
-            onClick={() => dateSelectHandler(2)}
-          >
-            last month
-          </button>
-          <button
-            className={styles.dateButton}
-            onClick={() => dateSelectHandler(3)}
-          >
-            last year
-          </button>
-          <input type="date" onChange={dataInputHandler} />
-        </div>
+        <DateFilter selectedDate={selectedDate} />
+        <h4 className={styles.statusFilterTitle}>Status</h4>
+
         <div className={styles.statusFilter}>
-          <h4>Status</h4>
           <button
-            className={styles.statusButton}
+            className={styles.statusActiveBtn}
             onClick={() => statusSelectHandler("active")}
           >
             active
           </button>
           <button
-            className={styles.statusButton}
+            className={styles.statusComplitedBtn}
             onClick={() => statusSelectHandler("completed")}
           >
             completed
@@ -110,8 +77,63 @@ const FilterTasks: FC<{ categoriesOption: Category[] }> = ({
       <button onClick={filterVisibilityHandler}>
         {filterVisibility ? "Filer Task" : "Close Filer"}
       </button>
-    </>
+    </div>
   );
 };
 
 export default FilterTasks;
+
+const DateFilter: FC<[number, number]> = ({ selectedDate }) => {
+  const dispatch = useDispatch();
+  const calendarRef = useRef<HTMLDataElement>(null);
+  const dateSelectHandler = (selectedOption) => {
+    dispatch(selectDate([Number(selectedOption), 0]));
+  };
+  const dataInputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(selectDate([4, new Date(e.target.value).getTime()]));
+  };
+  return (
+    <>
+      <h4 className={styles.dateFilterTitle}>Date</h4>
+      <div className={styles.dateFilter}>
+        <button
+          className={`${styles.dateBtn} ${
+            selectedDate[1] === 1 && styles.selected
+          }`}
+          onClick={() => dateSelectHandler(1)}
+        >
+          last day
+        </button>
+        <button
+          className={`${styles.dateBtn} ${
+            selectedDate[1] === 2 && styles.selected
+          }`}
+          onClick={() => dateSelectHandler(2)}
+        >
+          last week
+        </button>
+        <button
+          className={`${styles.dateBtn} ${
+            selectedDate[1] === 3 && styles.selected
+          }`}
+          onClick={() => dateSelectHandler(3)}
+        >
+          last month
+        </button>
+
+        <button
+          className={`${styles.dateBtn} ${
+            selectedDate[1] === 4 && styles.selected
+          }`}
+          onClick={() => calendarRef.current?.showPicker()}
+        >
+          {selectedDate[1] === 4
+            ? new Date(selectedDate[0]).toISOString().slice(0, 10)
+            : "select date"}
+        </button>
+
+        <input ref={calendarRef} type="date" onChange={dataInputHandler} />
+      </div>
+    </>
+  );
+};

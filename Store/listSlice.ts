@@ -6,8 +6,6 @@ import {
 } from "@reduxjs/toolkit";
 import { sortTasks } from "../utilities/TaskList";
 import { Task, ListSlice } from "../types";
-import { number } from "yup";
-import { FaTasks } from "react-icons/fa";
 const Datenow = Number(new Date());
 const initialState: ListSlice = {
   quantityOfCurrentTask: 2,
@@ -89,7 +87,7 @@ const ListSlice = createSlice({
       state.tasks[index].completedDate
         ? (state.tasks[index].completedDate = null)
         : (state.tasks[index].completedDate = Date.now());
-        sortTasks(state.tasks);
+      sortTasks(state.tasks);
     },
     setEditedTask: (state, action: PayloadAction<Task | null>) => {
       if (action.payload == null) {
