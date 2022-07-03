@@ -14,6 +14,8 @@
   transition: all 0.2s linear;
   padding: 10px;
   opacity: 0;
+  border-radius: 0.5rem;
+  background-color: rgba(251, 245, 245, 0.471);
 }
 .filterVisible {
   max-height: 500px;
@@ -25,7 +27,7 @@
   text-align: center;
   grid-column: 1/3;
   grid-row: 1;
-  font-size: 1.5rem;
+  font-size: 1rem;
   text-transform: uppercase;
 }
 .categoryFilter {
@@ -39,7 +41,7 @@
   row-gap: 0.5rem;
   background-color: rgba(199, 192, 192, 0.275);
   & .categoryButton {
-    width: 30%;
+    width: 15%;
     display: flex;
     background-color: transparent;
     position: relative;
@@ -51,7 +53,7 @@
     border: none;
     box-shadow: none;
     & svg {
-      font-size: 2.5rem;
+      font-size: 2rem;
       color: green;
     }
     & span {
@@ -94,7 +96,7 @@
   text-align: center;
   grid-column: 1/3;
   grid-row: 3;
-  font-size: 1.5rem;
+  font-size: 1rem;
   text-transform: uppercase;
 }
 .dateFilter {
@@ -107,16 +109,17 @@
   & .dateBtn {
     background-color: rgba(175, 223, 80, 0.956);
     border-radius: 1rem;
-    width: 22%;
+    width: 20%;
     line-height: 1rem;
-    padding: 1rem 0.5rem;
+    padding: 0.5rem 0.5rem;
     border: 3px white solid;
-    font-size: 0.8rem;
+    font-size: 0.6rem;
     font-weight: 800;
     text-transform: uppercase;
   }
   & .selected {
     background-color: rgba(236, 25, 25, 0.579);
+    width: 25%;
     border: 3px white solid;
   }
   & input {
@@ -129,6 +132,7 @@
   font-size: 1.2rem;
   text-transform: uppercase;
 }
+
 .statusFilter {
   display: flex;
   flex-direction: row;
@@ -136,16 +140,24 @@
   gap: 1rem;
   grid-row: 5;
   grid-column: 2;
-  & button {
-    background-color: yellowgreen;
+  .statusActiveBtn,
+  .statusComplitedBtn {
     width: 45%;
     border-radius: 2rem;
     font-size: 0.8rem;
     font-weight: 800;
+    font-size: 0.7rem;
+    border: 3px white solid;
     text-transform: uppercase;
   }
-
-  & input {
-    visibility: hidden;
+  .statusActiveBtn{
+    background-color: rgba(175, 223, 80, 0.956);
+  }
+  .statusComplitedBtn {
+    background-color: rgba(60, 25, 236, 0.579);
+  }
+  .selected {
+    background-color: rgba(236, 25, 25, 0.579);
+    border: 3px white solid;
   }
 }
