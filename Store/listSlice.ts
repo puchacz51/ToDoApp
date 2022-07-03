@@ -1,9 +1,4 @@
-import {
-  createSlice,
-  PayloadAction,
-  nanoid,
-  PrepareAction,
-} from "@reduxjs/toolkit";
+import { createSlice, PayloadAction, nanoid } from "@reduxjs/toolkit";
 import { sortTasks } from "../utilities/TaskList";
 import { Task, ListSlice } from "../types";
 const Datenow = Number(new Date());

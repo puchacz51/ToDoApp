@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { TaskStatus, TaskFilter, Category } from "../types";
+import { TaskStatus, TaskFilter, Category, FilterDateOption } from "../types";
 
 const categories = [
   "gym",
@@ -35,7 +35,7 @@ const filterSlice = createSlice({
           ))
         : (state.selectedStatus = [...state.selectedStatus, action.payload]);
     },
-    selectDate: (state, action: PayloadAction<[number, number]>) => {
+    selectDate: (state, action: PayloadAction<FilterDateOption>) => {
       const currentDate = new Date();
       const currentDay = currentDate.getDate();
       const currentMonth = currentDate.getMonth();

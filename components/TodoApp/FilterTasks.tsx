@@ -2,7 +2,7 @@ import React, { FC, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "../../styles/FilterTasks.module.scss";
 import { SwitchIcon } from "./AppIcons";
-import { Category, TaskStatus } from "../../types";
+import { Category, FilterDateOption, TaskStatus } from "../../types";
 import {
   toggleCategories,
   toggleStatus,
@@ -79,7 +79,7 @@ const FilterTasks: FC<{ categoriesOption: Category[] }> = ({
         className={styles.filterVisibilityBtn}
         onClick={filterVisibilityHandler}
       >
-        {filterVisibility ? "Filer Task" : "Close Filer"}
+        {filterVisibility ? "Filter Task" : "Close Filter"}
       </button>
     </div>
   );
@@ -87,10 +87,12 @@ const FilterTasks: FC<{ categoriesOption: Category[] }> = ({
 
 export default FilterTasks;
 
-const DateFilter: FC<[number, number]> = ({ selectedDate }) => {
+const DateFilter: FC<{ selectedDate: FilterDateOption }> = ({
+  selectedDate,
+}) => {
   const dispatch = useDispatch();
-  const calendarRef = useRef<HTMLDataElement>(null);
-  const dateSelectHandler = (selectedOption: [number, number]) => {
+  const calendarRef = useRef<any>(null);
+  const dateSelectHandler = (selectedOption: FilterDateOption | number) => {
     dispatch(selectDate([Number(selectedOption), 0]));
   };
   const dataInputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
