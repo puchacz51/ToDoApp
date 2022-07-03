@@ -11,7 +11,7 @@ const categories = [
 const initialState: TaskFilter = {
   selectedCategories: categories,
   selectedStatus: ["active", "completed"],
-  selectedDate: 0,
+  selectedDate: [0, 0],
   filterVisibility: false,
 };
 const filterSlice = createSlice({
