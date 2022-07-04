@@ -48,73 +48,75 @@ const ViewTask: React.FC = () => {
   };
 
   return (
-    <div className={styles.view}>
-      <button
-        className={styles.cancel}
-        onClick={() => dispatch(setEditedTask(null))}
-      >
-        X
-      </button>
-
-      <div className={styles.innerView}>
-        <label className={styles.title} htmlFor="title">
-          Title
-        </label>
-
-        <input
-          onChange={(e) => setTitle(e.currentTarget.value)}
-          className={styles.title}
-          type="text"
-          value={title}
-          disabled={!edited}
-        />
-        <label className={styles.categories} htmlFor="categories">
-          categories
-        </label>
-
-        <select
-          className={styles.categories}
-          name="categories"
-          disabled={!edited}
-          onChange={(e) => setCategory(e.currentTarget.value as Category)}
+    <div className={styles.viewWrapper}>
+      <div className={styles.view}>
+        <button
+          className={styles.cancel}
+          onClick={() => dispatch(setEditedTask(null))}
         >
-          {categoriesOption.map((cat) => {
-            return (
-              <option key={cat} value={cat} selected={cat == category}>
-                {cat.toLocaleUpperCase()}
-              </option>
-            );
-          })}
-        </select>
-        <label className={styles.description} htmlFor="description">
-          Descipttion
-        </label>
-        <textarea
-          className={styles.description}
-          disabled={!edited}
-          onChange={(e) => setDescription(e.currentTarget.value)}
-          value={description}
-        />
+          X
+        </button>
 
-        {!edited ? (
-          <>
-            <button className={styles.edit} onClick={() => setEdited(true)}>
-              <AiFillEdit></AiFillEdit>
-            </button>
-            <button className={styles.remove} onClick={removeTask}>
-              <BsFillTrashFill></BsFillTrashFill>
-            </button>
-          </>
-        ) : (
-          <>
-            <button onClick={modifyTask} className={styles.modify}>
-              <FaSave></FaSave>
-            </button>
-            <button onClick={defualtValue} className={styles.reset}>
-              RESET
-            </button>
-          </>
-        )}
+        <div className={styles.innerView}>
+          <label className={styles.title} htmlFor="title">
+            Title
+          </label>
+
+          <input
+            onChange={(e) => setTitle(e.currentTarget.value)}
+            className={styles.title}
+            type="text"
+            value={title}
+            disabled={!edited}
+          />
+          <label className={styles.categories} htmlFor="categories">
+            categories
+          </label>
+
+          <select
+            className={styles.categories}
+            name="categories"
+            disabled={!edited}
+            onChange={(e) => setCategory(e.currentTarget.value as Category)}
+          >
+            {categoriesOption.map((cat) => {
+              return (
+                <option key={cat} value={cat} selected={cat == category}>
+                  {cat.toLocaleUpperCase()}
+                </option>
+              );
+            })}
+          </select>
+          <label className={styles.description} htmlFor="description">
+            Descipttion
+          </label>
+          <textarea
+            className={styles.description}
+            disabled={!edited}
+            onChange={(e) => setDescription(e.currentTarget.value)}
+            value={description}
+          />
+
+          {!edited ? (
+            <>
+              <button className={styles.edit} onClick={() => setEdited(true)}>
+                <AiFillEdit></AiFillEdit>
+              </button>
+              <button className={styles.remove} onClick={removeTask}>
+                <BsFillTrashFill></BsFillTrashFill>
+              </button>
+            </>
+          ) : (
+            <>
+              <button onClick={modifyTask} className={styles.modify}>
+                <FaSave></FaSave>
+              </button>
+              <button onClick={defualtValue} className={styles.reset}>
+                RESET
+              </button>
+            </>
+          )}
+        </div>
       </div>
     </div>
   );

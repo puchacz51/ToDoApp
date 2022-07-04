@@ -28,64 +28,68 @@ const AddForm: React.FC = () => {
     }
   };
   return (
-    <div className={styles.view}>
-      <button
-        className={styles.cancel}
-        onClick={() => dispatch(toggleAddedForm())}
-      >
-        X
-      </button>
-
-      <div className={styles.innerView}>
-        <label className={styles.title} htmlFor="title">
-          Title
-        </label>
-
-        <input
-          className={styles.title}
-          type="text"
-          value={title}
-          onChange={(e) => setTitle(e.currentTarget.value)}
-        />
-
-        <label className={styles.categories} htmlFor="categories">
-          categories
-        </label>
-
-        <select
-          className={styles.categories}
-          onChange={(e) => setCategoryOption(e.currentTarget.value as Category)}
-          name="categories"
-        >
-          <option value="" selected>
-            SELECT
-          </option>
-          {categoriesOption.map((category) => {
-            return (
-              <option key={category} value={category}>
-                {category.toLocaleUpperCase()}
-              </option>
-            );
-          })}
-        </select>
-
-        <label className={styles.description} htmlFor="description">
-          Descipttion
-        </label>
-
-        <textarea
-          className={styles.description}
-          onChange={(e) => setDescription(e.currentTarget.value)}
-          value={description}
-        />
-
+    <div className={styles.viewWrapper}>
+      <div className={styles.view}>
         <button
-          disabled={!(title && description && categoryOption)}
-          className={`${styles.add} ${styles.icon}`}
-          onClick={addTask}
+          className={styles.cancel}
+          onClick={() => dispatch(toggleAddedForm())}
         >
-          <IoMdAddCircle></IoMdAddCircle>
+          X
         </button>
+
+        <div className={styles.innerView}>
+          <label className={styles.title} htmlFor="title">
+            Title
+          </label>
+
+          <input
+            className={styles.title}
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.currentTarget.value)}
+          />
+
+          <label className={styles.categories} htmlFor="categories">
+            categories
+          </label>
+
+          <select
+            className={styles.categories}
+            onChange={(e) =>
+              setCategoryOption(e.currentTarget.value as Category)
+            }
+            name="categories"
+          >
+            <option value="" selected>
+              SELECT
+            </option>
+            {categoriesOption.map((category) => {
+              return (
+                <option key={category} value={category}>
+                  {category.toLocaleUpperCase()}
+                </option>
+              );
+            })}
+          </select>
+
+          <label className={styles.description} htmlFor="description">
+            Descipttion
+          </label>
+
+          <textarea
+            className={styles.description}
+            onChange={(e) => setDescription(e.currentTarget.value)}
+            value={description}
+          />
+
+          <button
+            disabled={!(title && description && categoryOption)}
+            className={`${styles.add} ${styles.icon}`}
+            onClick={addTask}
+          >
+            <IoMdAddCircle></IoMdAddCircle>
+          </button>
+        </div>
       </div>
     </div>
   );

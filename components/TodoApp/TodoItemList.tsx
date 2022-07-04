@@ -23,8 +23,8 @@ const ToDoItemsList: FC = () => {
       (task) =>
         selectedCategories.includes(task.category) &&
         task.createDate > selectedDate[0] &&
-        ((task.completedDate && selectedStatus.includes("active")) ||
-          (!task.completedDate && selectedStatus.includes("completed")))
+        ((task.completedDate && selectedStatus.includes("completed")) ||
+          (!task.completedDate && selectedStatus.includes("active")))
     );
     setCurrentList(filteredList);
   }, [selectedCategories, selectedDate, selectedStatus, tasks]);

@@ -5,7 +5,7 @@ const Footer:React.FC = ()=>{
 
 	return(
 
-		<footer>d</footer>
+		<footer></footer>
 
 	)
 }
