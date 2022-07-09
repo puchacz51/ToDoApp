@@ -16,11 +16,7 @@ const AddForm: React.FC = () => {
   const [descriptionFocused, setDescriptionFocused] = useState<boolean>(false);
 
   const refViewContainer = useRef(null);
-  const descriptionFocusHandler = () => {
-    console.log("descriptionFocusHandler");
-
-    setDescriptionFocused(true);
-  };
+ 
   const addTask = () => {
     if (title.length > 0 && description.length > 0 && categoryOption != null) {
       dispatch(
