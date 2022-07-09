@@ -14,7 +14,10 @@ const SelectTasks: React.FC = () => {
   const { editedTask, categoriesOption, addedForm } = list;
   const dispatch = useDispatch();
   return (
-    <div className={styles.toDoAppContainerWrapper}>
+    <div
+      className={styles.toDoAppContainerWrapper}
+  
+    >
       <div className={styles.toDoAppContainer}>
         <div className={styles.containerAddTask}>
           <h3>Create new Task :</h3>

@@ -4,7 +4,7 @@ import ToDoApp from "../components/TodoApp/ToDoApp";
 
 const Home: NextPage = () => {
   return (
-      <ToDoApp></ToDoApp>
+      <ToDoApp ></ToDoApp>
   );
 };
 

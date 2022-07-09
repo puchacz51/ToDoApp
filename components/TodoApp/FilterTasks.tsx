@@ -79,7 +79,7 @@ const FilterTasks: FC<{ categoriesOption: Category[] }> = ({
         className={styles.filterVisibilityBtn}
         onClick={filterVisibilityHandler}
       >
-        {filterVisibility ? "Filter Task" : "Close Filter"}
+        {filterVisibility ? "Filtr Tasks" : "Close Filter"}
       </button>
     </div>
   );
@@ -96,6 +96,8 @@ const DateFilter: FC<{ selectedDate: FilterDateOption }> = ({
     dispatch(selectDate([Number(selectedOption), 0]));
   };
   const dataInputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(e.currentTarget.value, "e.target.value");
+
     dispatch(selectDate([4, new Date(e.target.value).getTime()]));
   };
   return (
@@ -141,7 +143,7 @@ const DateFilter: FC<{ selectedDate: FilterDateOption }> = ({
             ? new Date(selectedDate[0]).toISOString().slice(0, 10)
             : "select date"}
         </button>
-        <input ref={calendarRef} type="date" onChange={dataInputHandler} />
+        <input ref={calendarRef} type="date"  onChange={dataInputHandler} />
       </div>
     </>
   );
