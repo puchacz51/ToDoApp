@@ -3,8 +3,9 @@ import { sortTasks } from "../utilities/TaskList";
 import { Task, ListSlice } from "../types";
 const Datenow = Number(new Date());
 const initialState: ListSlice = {
-  quantityOfCurrentTask: 2,
-  quantityOfCompletedTask: 1,
+  quantityOfCurrentTasks: 4,
+  quantityOfCompletedTasks: 1,
+  quantityOfActiveTasks: 3,
   editedTask: null,
   addedForm: false,
   categoriesOption: ["gym", "school", "work", "daily duties", "others"],
@@ -54,7 +55,7 @@ const ListSlice = createSlice({
   reducers: {
     add: {
       reducer: (state, action: PayloadAction<Task>) => {
-        state.quantityOfCurrentTask++;
+        state.quantityOfActiveTasks++;
         state.tasks.unshift(action.payload);
       },
       prepare: (task: Omit<Task, "id">) => {
@@ -64,9 +65,9 @@ const ListSlice = createSlice({
     remove: (state, action: PayloadAction<[string, boolean]>) => {
       const [removedID, removedStatus] = action.payload;
       if (removedStatus) {
-        state.quantityOfCompletedTask--;
+        state.quantityOfCompletedTasks--;
       } else {
-        state.quantityOfCurrentTask--;
+        state.quantityOfActiveTasks--;
       }
       state.tasks = state.tasks.filter(({ id }) => id != removedID);
     },
@@ -79,10 +80,18 @@ const ListSlice = createSlice({
     toggleCompleted: (state, action: PayloadAction<string>) => {
       const id = action.payload;
       const index = state.tasks.findIndex((task) => task.id === id);
-      state.tasks[index].completedDate
-        ? (state.tasks[index].completedDate = null)
-        : (state.tasks[index].completedDate = Date.now());
+      if (state.tasks[index].completedDate) {
+        state.tasks[index].completedDate = null;
+        state.quantityOfCompletedTasks--;
+        state.quantityOfActiveTasks++;
+      } else {
+        state.tasks[index].completedDate = Date.now();
+        state.quantityOfCompletedTasks++;
+        state.quantityOfActiveTasks--;
+      }
+
       sortTasks(state.tasks);
+ 
     },
     setEditedTask: (state, action: PayloadAction<Task | null>) => {
       if (action.payload == null) {
@@ -94,6 +103,9 @@ const ListSlice = createSlice({
     toggleAddedForm: (state) => {
       state.addedForm = !state.addedForm;
     },
+    setCountOfCurrentTasks: (state, action: PayloadAction<number>) => {
+      state.quantityOfCurrentTasks = action.payload;
+    }
   },
 });
 
@@ -105,4 +117,5 @@ export const {
   toggleCompleted,
   setEditedTask,
   toggleAddedForm,
+  setCountOfCurrentTasks,
 } = ListSlice.actions;

@@ -25,10 +25,10 @@
   max-height: 0px;
   overflow: hidden;
   transition: all 0.2s linear;
-  padding: 10px;
   opacity: 0;
   border-radius: 0.5rem;
   background-color: rgba(251, 245, 245, 0.471);
+  margin-top: 0.5rem;
   & h4 {
     background-color: rgba(249, 245, 245, 0.166);
     padding: 0.5rem;
@@ -38,6 +38,8 @@
 .filterVisible {
   max-height: 500px;
   opacity: 1;
+  padding: 10px;
+
   transition: all 0.2s linear;
 }
 .categoryFilterTitle {
@@ -141,7 +143,8 @@
   }
   & input {
     visibility: hidden;
-    display: none;
+    display: block;
+    position: absolute;
   }
 }
 .statusFilterTitle {
@@ -210,8 +213,12 @@
   }
 }
 @media only screen and (min-width: 1024px) {
+  .filterVisibilityBtn {
+    width: fit-content;
+    padding: 1rem 2rem;
+  }
   .filterContainter {
-    grid-template-columns: 10% 1fr 10% 1fr;
+    grid-template-columns: 15% 1fr 10% 1fr;
     & .categoryFilterTitle {
       grid-column: 1;
       grid-row: 1;

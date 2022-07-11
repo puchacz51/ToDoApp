@@ -24,16 +24,17 @@
     background-color: red;
     color: white;
     font-size: 3rem;
+    z-index: 3;
   }
 }
 .innerView {
   background-color: white;
   height: 90vh;
-  justify-content: flex-start;
   width: 90vw;
+  border-radius: 1rem;
+  justify-content: flex-start;
   display: grid;
   text-align: center;
-  border-radius: 1rem;
   justify-content: space-between;
   align-items: center;
   grid-template-columns: 50% 50%;
@@ -101,7 +102,6 @@
     background-color: yellow;
     grid-column: 2;
     border-bottom-left-radius: 0;
-
   }
 
   button.add {

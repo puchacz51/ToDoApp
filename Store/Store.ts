@@ -5,6 +5,8 @@ import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import sessionStorage from "redux-persist/lib/storage/session";
 import thunk from "redux-thunk";
+import { setCountOfCurrentTasks } from "./listSlice";
+
 const pListConfig = {
   key: "list",
   storage: storage,

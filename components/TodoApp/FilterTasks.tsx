@@ -17,7 +17,11 @@ const FilterTasks: FC<{ categoriesOption: Category[] }> = ({
   const { selectedCategories, filterVisibility, selectedDate, selectedStatus } =
     useSelector((state: RootState) => state.filter);
   const dispatch = useDispatch();
-
+  const {
+    quantityOfCurrentTasks,
+    quantityOfCompletedTasks,
+    quantityOfActiveTasks,
+  } = useSelector((state: RootState) => state.list);
   const categorySelectHandler = (selectedCategory: Category) => {
     dispatch(toggleCategories(selectedCategory));
   };
@@ -63,7 +67,7 @@ const FilterTasks: FC<{ categoriesOption: Category[] }> = ({
             }`}
             onClick={() => statusSelectHandler("active")}
           >
-            active
+            active({quantityOfActiveTasks})
           </button>
           <button
             className={`${styles.statusComplitedBtn} ${
@@ -71,7 +75,7 @@ const FilterTasks: FC<{ categoriesOption: Category[] }> = ({
             }`}
             onClick={() => statusSelectHandler("completed")}
           >
-            completed
+            completed({quantityOfCompletedTasks})
           </button>
         </div>
       </div>
@@ -79,7 +83,10 @@ const FilterTasks: FC<{ categoriesOption: Category[] }> = ({
         className={styles.filterVisibilityBtn}
         onClick={filterVisibilityHandler}
       >
-        {filterVisibility ? "Filtr Tasks" : "Close Filter"}
+        ,
+        {filterVisibility
+          ? `Filtr Tasks(${quantityOfCurrentTasks})`
+          : `Close Filter(${quantityOfCurrentTasks})`}
       </button>
     </div>
   );
@@ -143,7 +150,7 @@ const DateFilter: FC<{ selectedDate: FilterDateOption }> = ({
             ? new Date(selectedDate[0]).toISOString().slice(0, 10)
             : "select date"}
         </button>
-        <input ref={calendarRef} type="date"  onChange={dataInputHandler} />
+        <input ref={calendarRef} type="date" onChange={dataInputHandler} />
       </div>
     </>
   );

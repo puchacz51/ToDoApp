@@ -19,8 +19,10 @@ type Task = {
 interface ListSlice {
   categoriesOption: string[];
   addedForm: boolean;
-  quantityOfCurrentTask: number;
-  quantityOfCompletedTask: number;
+  quantityOfCurrentTasks: number;
+  quantityOfCompletedTasks: number;
+  quantityOfActiveTasks: number;
+
   editedTask: Task | null;
   tasks: Task[];
 }
