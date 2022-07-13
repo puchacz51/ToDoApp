@@ -1,4 +1,4 @@
-import React, { FC, useRef } from "react";
+import React, { FC, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "../../styles/FilterTasks.module.scss";
 import { SwitchIcon } from "./AppIcons";
@@ -10,6 +10,7 @@ import {
   toggleFilterVisibility,
 } from "../../Store/filterSlice";
 import { RootState } from "../../Store/Store";
+import Calendar from "react-calendar";
 
 const FilterTasks: FC<{ categoriesOption: Category[] }> = ({
   categoriesOption,
@@ -17,11 +18,9 @@ const FilterTasks: FC<{ categoriesOption: Category[] }> = ({
   const { selectedCategories, filterVisibility, selectedDate, selectedStatus } =
     useSelector((state: RootState) => state.filter);
   const dispatch = useDispatch();
-  const {
-    quantityOfCurrentTasks,
-    quantityOfCompletedTasks,
-    quantityOfActiveTasks,
-  } = useSelector((state: RootState) => state.list);
+  const { quantityOfCurrentTasks } = useSelector(
+    (state: RootState) => state.list
+  );
   const categorySelectHandler = (selectedCategory: Category) => {
     dispatch(toggleCategories(selectedCategory));
   };
@@ -37,7 +36,7 @@ const FilterTasks: FC<{ categoriesOption: Category[] }> = ({
     <div className={styles.filterWrapper}>
       <div
         className={`${styles.filterContainter} ${
-          filterVisibility || styles.filterVisible
+          filterVisibility && styles.filterVisible
         }`}
       >
         <h4 className={styles.categoryFilterTitle}>categories</h4>
@@ -67,7 +66,7 @@ const FilterTasks: FC<{ categoriesOption: Category[] }> = ({
             }`}
             onClick={() => statusSelectHandler("active")}
           >
-            active({quantityOfActiveTasks})
+            active
           </button>
           <button
             className={`${styles.statusComplitedBtn} ${
@@ -75,7 +74,7 @@ const FilterTasks: FC<{ categoriesOption: Category[] }> = ({
             }`}
             onClick={() => statusSelectHandler("completed")}
           >
-            completed({quantityOfCompletedTasks})
+            completed
           </button>
         </div>
       </div>
@@ -83,7 +82,6 @@ const FilterTasks: FC<{ categoriesOption: Category[] }> = ({
         className={styles.filterVisibilityBtn}
         onClick={filterVisibilityHandler}
       >
-        ,
         {filterVisibility
           ? `Filtr Tasks(${quantityOfCurrentTasks})`
           : `Close Filter(${quantityOfCurrentTasks})`}
@@ -99,13 +97,15 @@ const DateFilter: FC<{ selectedDate: FilterDateOption }> = ({
 }) => {
   const dispatch = useDispatch();
   const calendarRef = useRef<any>(null);
+  const [calendarVisibility, setCalendarVisibility] = useState(false);
+  const [selectedDateCalendar, setSelectedDateCalendar] = useState(null);
   const dateSelectHandler = (selectedOption: FilterDateOption | number) => {
     dispatch(selectDate([Number(selectedOption), 0]));
   };
-  const dataInputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e.currentTarget.value, "e.target.value");
-
-    dispatch(selectDate([4, new Date(e.target.value).getTime()]));
+  const dataInputHandler = () => {
+    if (selectedDate[0] === 4 || calendarVisibility) {
+      setCalendarVisibility(false);
+    } else setCalendarVisibility(true);
   };
   return (
     <>
@@ -141,16 +141,18 @@ const DateFilter: FC<{ selectedDate: FilterDateOption }> = ({
             selectedDate[1] === 4 && styles.selected
           }`}
           onClick={() => {
-            selectedDate[1] === 4
-              ? dispatch(selectDate([4, 0]))
-              : calendarRef.current?.showPicker();
+            dataInputHandler();
           }}
         >
           {selectedDate[1] === 4
             ? new Date(selectedDate[0]).toISOString().slice(0, 10)
             : "select date"}
         </button>
-        <input ref={calendarRef} type="date" onChange={dataInputHandler} />
+        {calendarVisibility && (
+          <Calendar className={styles.calendar}></Calendar>
+        )}
+        {/* <input ref={calendarRef} type="date" onChange={dataInputHandler} />
+         */}
       </div>
     </>
   );

@@ -20,8 +20,6 @@ interface ListSlice {
   categoriesOption: string[];
   addedForm: boolean;
   quantityOfCurrentTasks: number;
-  quantityOfCompletedTasks: number;
-  quantityOfActiveTasks: number;
 
   editedTask: Task | null;
   tasks: Task[];

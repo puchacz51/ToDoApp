@@ -4,8 +4,6 @@ import { Task, ListSlice } from "../types";
 const Datenow = Number(new Date());
 const initialState: ListSlice = {
   quantityOfCurrentTasks: 4,
-  quantityOfCompletedTasks: 1,
-  quantityOfActiveTasks: 3,
   editedTask: null,
   addedForm: false,
   categoriesOption: ["gym", "school", "work", "daily duties", "others"],
@@ -55,7 +53,6 @@ const ListSlice = createSlice({
   reducers: {
     add: {
       reducer: (state, action: PayloadAction<Task>) => {
-        state.quantityOfActiveTasks++;
         state.tasks.unshift(action.payload);
       },
       prepare: (task: Omit<Task, "id">) => {
@@ -63,12 +60,8 @@ const ListSlice = createSlice({
       },
     },
     remove: (state, action: PayloadAction<[string, boolean]>) => {
-      const [removedID, removedStatus] = action.payload;
-      if (removedStatus) {
-        state.quantityOfCompletedTasks--;
-      } else {
-        state.quantityOfActiveTasks--;
-      }
+      const [removedID] = action.payload;
+
       state.tasks = state.tasks.filter(({ id }) => id != removedID);
     },
     modify: (state, action: PayloadAction<Task>) => {
@@ -91,7 +84,6 @@ const ListSlice = createSlice({
       }
 
       sortTasks(state.tasks);
- 
     },
     setEditedTask: (state, action: PayloadAction<Task | null>) => {
       if (action.payload == null) {
@@ -103,9 +95,10 @@ const ListSlice = createSlice({
     toggleAddedForm: (state) => {
       state.addedForm = !state.addedForm;
     },
-    setCountOfCurrentTasks: (state, action: PayloadAction<number>) => {
+
+    setQuantityOfCurrentTasks: (state, action: PayloadAction<number>) => {
       state.quantityOfCurrentTasks = action.payload;
-    }
+    },
   },
 });
 
@@ -117,5 +110,5 @@ export const {
   toggleCompleted,
   setEditedTask,
   toggleAddedForm,
-  setCountOfCurrentTasks,
+  setQuantityOfCurrentTasks,
 } = ListSlice.actions;

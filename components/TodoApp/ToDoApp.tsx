@@ -14,10 +14,7 @@ const SelectTasks: React.FC = () => {
   const { editedTask, categoriesOption, addedForm } = list;
   const dispatch = useDispatch();
   return (
-    <div
-      className={styles.toDoAppContainerWrapper}
-  
-    >
+    <div className={styles.toDoAppContainerWrapper}>
       <div className={styles.toDoAppContainer}>
         <div className={styles.containerAddTask}>
           <h3>Create new Task :</h3>
@@ -28,6 +25,8 @@ const SelectTasks: React.FC = () => {
             +
           </button>
         </div>
+        {addedForm && <AddForm />}
+
         <FilterTasks
           categoriesOption={categoriesOption as Category[]}
         ></FilterTasks>
@@ -35,7 +34,6 @@ const SelectTasks: React.FC = () => {
         <ToDoItemsList />
 
         {editedTask && <ViewTask />}
-        {addedForm && <AddForm />}
       </div>
     </div>
   );

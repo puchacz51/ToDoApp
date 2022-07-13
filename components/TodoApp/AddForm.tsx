@@ -80,7 +80,7 @@ const AddForm: React.FC = () => {
         </select>
 
         <label className={styles.description} htmlFor="description">
-          Descipttion
+          Desciption
         </label>
 
         <textarea

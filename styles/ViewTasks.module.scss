@@ -38,7 +38,7 @@
   justify-content: space-between;
   align-items: center;
   grid-template-columns: 50% 50%;
-  grid-template-rows: auto auto auto 1fr 5fr 1fr;
+  grid-template-rows: auto auto auto auto 5fr 1fr;
   & button {
     height: 100%;
     border-radius: 0 0 1rem 1rem;
@@ -52,11 +52,13 @@
   }
 
   label.title {
+    margin-top: 1rem;
     font-size: 2rem;
     grid-row: 1;
     grid-column: 1/3;
   }
   input.title {
+    margin: 0 1rem;
     font-size: 2rem;
     height: 100%;
     grid-row: 2;
@@ -66,10 +68,15 @@
   }
 
   label.categories {
+    margin-top: 1rem;
+    margin-left: 1rem;
     grid-row: 3;
     grid-column: 1;
   }
   select.categories {
+    margin-top: 1rem;
+    border-radius: 0.5rem;
+    margin-right: 1rem;
     grid-row: 3;
     grid-column: 2;
     & option {
@@ -80,11 +87,30 @@
   }
 
   label.description {
+    position: relative;
     grid-row: 4;
     grid-column: 1/3;
+    //  &::after{
+    //   position: fixed;
+    //   left: 50%;
+    //   top: 50%;
+    //   content: "^";
+    //   display: flex;
+    //   align-items: center;
+    //   justify-content: center;
+
+    //   height: 3rem;
+    //   width: 3rem;
+    //   font-size: 3rem;
+    //   color: white;
+    //   border-radius: 50%;
+    //   background-color: rgba(0, 0, 0, 0.304);
+    //   margin-top: 0.5rem;
+    //   z-index: 999;
+    // }
   }
   textarea.description {
-    font-size: 1rem;
+    font-size: 1.2rem;
     grid-row: 5;
     grid-column: 1/3;
   }
@@ -93,13 +119,13 @@
     grid-row: 6;
     font-size: 3rem;
     grid-column: 1;
-    background-color: blue;
+    background-color: rgb(21, 188, 207);
     border-bottom-right-radius: 0;
   }
   button.remove {
     grid-row: 6;
     font-size: 3rem;
-    background-color: yellow;
+    background-color: rgb(32, 181, 42);
     grid-column: 2;
     border-bottom-left-radius: 0;
   }
@@ -123,7 +149,7 @@
   }
   button.reset {
     grid-row: 6;
-    font-size: 3rem;
+    font-size: 2.5rem;
     grid-column: 2;
     background-color: red;
     border-bottom-left-radius: 0;
@@ -143,5 +169,17 @@
   label.categories,
   select.categories {
     display: none;
+  }
+}
+@media only screen and (min-width: 1024px) {
+  .view {
+    position: relative;
+    background-color: transparent;
+    height: auto;
+    margin: 1rem 0;
+    & .innerView{
+      max-height: 600px;
+
+    }
   }
 }
