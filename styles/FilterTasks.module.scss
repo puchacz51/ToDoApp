@@ -36,7 +36,7 @@
   }
 }
 .filterVisible {
-  max-height: 500px;
+  max-height: 600px;
   opacity: 1;
   padding: 10px;
 
@@ -180,6 +180,9 @@
     background-color: rgba(236, 25, 25, 0.579);
     border: 3px white solid;
   }
+}
+.calendar{
+  width: 100%;
 }
 @media only screen and (min-width: 576px) {
   .filterContainter {

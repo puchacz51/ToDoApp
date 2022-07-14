@@ -1,4 +1,4 @@
-import React, { FC, useRef, useState } from "react";
+import React, { FC, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "../../styles/FilterTasks.module.scss";
 import { SwitchIcon } from "./AppIcons";
@@ -11,6 +11,7 @@ import {
 } from "../../Store/filterSlice";
 import { RootState } from "../../Store/Store";
 import Calendar from "react-calendar";
+import "react-calendar/dist/Calendar.css";
 
 const FilterTasks: FC<{ categoriesOption: Category[] }> = ({
   categoriesOption,
@@ -96,17 +97,26 @@ const DateFilter: FC<{ selectedDate: FilterDateOption }> = ({
   selectedDate,
 }) => {
   const dispatch = useDispatch();
-  const calendarRef = useRef<any>(null);
   const [calendarVisibility, setCalendarVisibility] = useState(false);
-  const [selectedDateCalendar, setSelectedDateCalendar] = useState(null);
+  const calendarRef = useRef<HTMLDivElement>(null);
   const dateSelectHandler = (selectedOption: FilterDateOption | number) => {
     dispatch(selectDate([Number(selectedOption), 0]));
   };
-  const dataInputHandler = () => {
-    if (selectedDate[0] === 4 || calendarVisibility) {
-      setCalendarVisibility(false);
-    } else setCalendarVisibility(true);
+  const calendarDataHandler = (calendarDate) => {
+    console.log(calendarDate.getTime());
+    dispatch(selectDate([4, calendarDate.getTime() + 13]));
+    setCalendarVisibility(false);
   };
+
+  const calendarBtnHandler = () => {
+    if (selectedDate[1] === 4 || calendarVisibility) {
+      setCalendarVisibility(false);
+      dispatch(selectDate([0, 0]));
+    } else {
+      setCalendarVisibility(true);
+    }
+  };
+  
   return (
     <>
       <h4 className={styles.dateFilterTitle}>Date</h4>
@@ -141,7 +151,7 @@ const DateFilter: FC<{ selectedDate: FilterDateOption }> = ({
             selectedDate[1] === 4 && styles.selected
           }`}
           onClick={() => {
-            dataInputHandler();
+            calendarBtnHandler();
           }}
         >
           {selectedDate[1] === 4
@@ -149,7 +159,12 @@ const DateFilter: FC<{ selectedDate: FilterDateOption }> = ({
             : "select date"}
         </button>
         {calendarVisibility && (
-          <Calendar className={styles.calendar}></Calendar>
+          <Calendar
+            ref={calendarRef}
+            className={styles.calendar}
+            onClickDay={(e) => calendarDataHandler(e)}
+            onBlur={() => setCalendarVisibility(false)}
+          ></Calendar>
         )}
         {/* <input ref={calendarRef} type="date" onChange={dataInputHandler} />
          */}

@@ -75,12 +75,8 @@ const ListSlice = createSlice({
       const index = state.tasks.findIndex((task) => task.id === id);
       if (state.tasks[index].completedDate) {
         state.tasks[index].completedDate = null;
-        state.quantityOfCompletedTasks--;
-        state.quantityOfActiveTasks++;
       } else {
         state.tasks[index].completedDate = Date.now();
-        state.quantityOfCompletedTasks++;
-        state.quantityOfActiveTasks--;
       }
 
       sortTasks(state.tasks);

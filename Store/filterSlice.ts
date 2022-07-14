@@ -46,6 +46,9 @@ const filterSlice = createSlice({
         return;
       }
       switch (action.payload[0]) {
+        case 0:
+          state.selectedDate = [0, 0];
+          break;
         case 1:
           state.selectedDate = [
             new Date(currentYear, currentMonth, currentDay - 1).getTime(),
