@@ -1,6 +1,5 @@
 import React, { FC, useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import styles from "../../styles/FilterTasks.module.scss";
 import { SwitchIcon } from "./AppIcons";
 import { Category, FilterDateOption, TaskStatus } from "../../types";
 import {
@@ -12,6 +11,7 @@ import {
 import { RootState } from "../../Store/Store";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
+import styles from "../../styles/FilterTasks.module.scss";
 
 const FilterTasks: FC<{ categoriesOption: Category[] }> = ({
   categoriesOption,
@@ -107,7 +107,6 @@ const DateFilter: FC<{ selectedDate: FilterDateOption }> = ({
     dispatch(selectDate([4, calendarDate.getTime() + 13]));
     setCalendarVisibility(false);
   };
-
   const calendarBtnHandler = () => {
     if (selectedDate[1] === 4 || calendarVisibility) {
       setCalendarVisibility(false);
@@ -116,10 +115,28 @@ const DateFilter: FC<{ selectedDate: FilterDateOption }> = ({
       setCalendarVisibility(true);
     }
   };
-  
+  useEffect(() => {
+    if (calendarVisibility) {
+      const handleClickOutside = (e: MouseEvent) => {
+        if (
+          calendarRef.current &&
+          calendarRef.current.contains &&
+          !calendarRef.current.contains(e.target as Node)
+        ) {
+          setCalendarVisibility(false);
+        }
+      };
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+    }
+  }, [calendarRef.current]);
+
   return (
     <>
       <h4 className={styles.dateFilterTitle}>Date</h4>
+
       <div className={styles.dateFilter}>
         <button
           className={`${styles.dateBtn} ${
@@ -160,14 +177,12 @@ const DateFilter: FC<{ selectedDate: FilterDateOption }> = ({
         </button>
         {calendarVisibility && (
           <Calendar
-            ref={calendarRef}
+            inputRef={calendarRef}
             className={styles.calendar}
             onClickDay={(e) => calendarDataHandler(e)}
             onBlur={() => setCalendarVisibility(false)}
           ></Calendar>
         )}
-        {/* <input ref={calendarRef} type="date" onChange={dataInputHandler} />
-         */}
       </div>
     </>
   );

@@ -1,7 +1,6 @@
 .filerWrapper {
   display: block;
   max-width: 500px;
-  overflow: hidden;
 }
 .filterVisibilityBtn {
   display: block;
@@ -39,6 +38,7 @@
   max-height: 600px;
   opacity: 1;
   padding: 10px;
+  overflow: visible;
 
   transition: all 0.2s linear;
 }
@@ -181,8 +181,9 @@
     border: 3px white solid;
   }
 }
-.calendar{
+.calendar {
   width: 100%;
+  margin: 0.5rem 0;
 }
 @media only screen and (min-width: 576px) {
   .filterContainter {
@@ -235,6 +236,7 @@
       grid-row: 1;
     }
     & .dateFilter {
+      position: relative;
       grid-row: 1;
       grid-column: 4;
     }
@@ -248,5 +250,11 @@
       grid-row: 3;
       grid-column: 2;
     }
+  }
+  .calendar {
+    position: absolute;
+    width: 500px;
+    top: 100%;
+    z-index: 3000;
   }
 }

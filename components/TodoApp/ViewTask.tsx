@@ -50,14 +50,13 @@ const ViewTask: React.FC = () => {
   return (
     <div className={styles.viewWrapper}>
       <div className={styles.view}>
-        <button
-          className={styles.cancel}
-          onClick={() => dispatch(setEditedTask(null))}
-        >
-          X
-        </button>
-
         <div className={styles.innerView}>
+          <button
+            className={styles.cancel}
+            onClick={() => dispatch(setEditedTask(null))}
+          >
+            X
+          </button>
           <label className={styles.title} htmlFor="title">
             Title
           </label>
