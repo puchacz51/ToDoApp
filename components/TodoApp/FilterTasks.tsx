@@ -98,17 +98,16 @@ const DateFilter: FC<{ selectedDate: FilterDateOption }> = ({
 }) => {
   const dispatch = useDispatch();
   const [calendarVisibility, setCalendarVisibility] = useState(false);
-  const calendarRef = useRef<HTMLDivElement>(null);
+  const calendarRef = useRef<HTMLInputElement>(null);
   const dateSelectHandler = (selectedOption: FilterDateOption | number) => {
     dispatch(selectDate([Number(selectedOption), 0]));
   };
-  const calendarDataHandler = (calendarDate) => {
-    console.log(calendarDate.getTime());
+  const calendarDataHandler = (calendarDate: Date) => {
     dispatch(selectDate([4, calendarDate.getTime() + 13]));
     setCalendarVisibility(false);
   };
   const calendarBtnHandler = () => {
-    if (selectedDate[1] === 4 || calendarVisibility) {
+    if (selectedDate[1] === 4) {
       setCalendarVisibility(false);
       dispatch(selectDate([0, 0]));
     } else {
@@ -116,22 +115,23 @@ const DateFilter: FC<{ selectedDate: FilterDateOption }> = ({
     }
   };
   useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        calendarRef.current &&
+        !calendarRef.current.contains(e.target as Node)
+      ) {
+        setCalendarVisibility(false);
+      }
+    };
     if (calendarVisibility) {
-      const handleClickOutside = (e: MouseEvent) => {
-        if (
-          calendarRef.current &&
-          calendarRef.current.contains &&
-          !calendarRef.current.contains(e.target as Node)
-        ) {
-          setCalendarVisibility(false);
-        }
-      };
       document.addEventListener("mousedown", handleClickOutside);
-      return () => {
-        document.removeEventListener("mousedown", handleClickOutside);
-      };
     }
-  }, [calendarRef.current]);
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [calendarVisibility]);
 
   return (
     <>
@@ -168,7 +168,7 @@ const DateFilter: FC<{ selectedDate: FilterDateOption }> = ({
             selectedDate[1] === 4 && styles.selected
           }`}
           onClick={() => {
-            calendarBtnHandler();
+            !calendarVisibility && calendarBtnHandler();
           }}
         >
           {selectedDate[1] === 4
@@ -179,8 +179,7 @@ const DateFilter: FC<{ selectedDate: FilterDateOption }> = ({
           <Calendar
             inputRef={calendarRef}
             className={styles.calendar}
-            onClickDay={(e) => calendarDataHandler(e)}
-            onBlur={() => setCalendarVisibility(false)}
+            onClickDay={(e: Date) => calendarDataHandler(e)}
           ></Calendar>
         )}
       </div>

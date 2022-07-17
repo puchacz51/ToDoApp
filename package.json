@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.8.1",
+    "@types/react-calendar": "^3.5.1",
     "emoji-picker-react": "^3.5.1",
     "eslint-config-prettier": "^8.5.0",
     "flat-color-icons": "^1.1.0",
