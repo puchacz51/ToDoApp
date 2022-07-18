@@ -16,7 +16,7 @@ const AddForm: React.FC = () => {
   const [descriptionFocused, setDescriptionFocused] = useState<boolean>(false);
 
   const refViewContainer = useRef(null);
- 
+
   const addTask = () => {
     if (title.length > 0 && description.length > 0 && categoryOption != null) {
       dispatch(
@@ -35,16 +35,12 @@ const AddForm: React.FC = () => {
 
   return (
     <div ref={refViewContainer} className={styles.view}>
-      <button
-        className={styles.cancel}
-        onClick={() => dispatch(toggleAddedForm())}
-      >
-        X
-      </button>
-
       <div
         className={`${styles.innerView} ${descriptionFocused && styles.viewUp}`}
       >
+        <span className={styles.cancel}>
+          <button onClick={() => dispatch(toggleAddedForm())}>X</button>
+        </span>
         <label className={styles.title} htmlFor="title">
           Title
         </label>
@@ -85,7 +81,7 @@ const AddForm: React.FC = () => {
 
         <textarea
           className={styles.description}
-          onFocus={()=>setDescriptionFocused(true)}
+          onFocus={() => setDescriptionFocused(true)}
           onBlur={() => setDescriptionFocused(false)}
           onChange={(e) => setDescription(e.currentTarget.value)}
           value={description}

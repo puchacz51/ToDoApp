@@ -98,6 +98,7 @@ const DateFilter: FC<{ selectedDate: FilterDateOption }> = ({
 }) => {
   const dispatch = useDispatch();
   const [calendarVisibility, setCalendarVisibility] = useState(false);
+  const selectDateBtnRef = useRef<HTMLButtonElement>(null);
   const calendarRef = useRef<HTMLInputElement>(null);
   const dateSelectHandler = (selectedOption: FilterDateOption | number) => {
     dispatch(selectDate([Number(selectedOption), 0]));
@@ -107,9 +108,14 @@ const DateFilter: FC<{ selectedDate: FilterDateOption }> = ({
     setCalendarVisibility(false);
   };
   const calendarBtnHandler = () => {
+    console.log("calendarBtnHandler");
+
     if (selectedDate[1] === 4) {
       setCalendarVisibility(false);
       dispatch(selectDate([0, 0]));
+    }
+   else if (selectedDate[1] === 0 && calendarVisibility) {
+      setCalendarVisibility(false);
     } else {
       setCalendarVisibility(true);
     }
@@ -118,7 +124,8 @@ const DateFilter: FC<{ selectedDate: FilterDateOption }> = ({
     const handleClickOutside = (e: MouseEvent) => {
       if (
         calendarRef.current &&
-        !calendarRef.current.contains(e.target as Node)
+        !calendarRef.current.contains(e.target as Node) &&
+        !selectDateBtnRef.current.contains(e.target as Node)
       ) {
         setCalendarVisibility(false);
       }
@@ -164,11 +171,12 @@ const DateFilter: FC<{ selectedDate: FilterDateOption }> = ({
         </button>
 
         <button
+          ref={selectDateBtnRef}
           className={`${styles.dateBtn}  ${
             selectedDate[1] === 4 && styles.selected
           }`}
           onClick={() => {
-            !calendarVisibility && calendarBtnHandler();
+            calendarBtnHandler();
           }}
         >
           {selectedDate[1] === 4
