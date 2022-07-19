@@ -6,18 +6,20 @@ import {
   setEditedTask,
   setQuantityOfCurrentTasks,
 } from "../../Store/listSlice";
-import styles from "../../styles/ToDo.module.scss";
 import { BsFileText } from "react-icons/bs";
 import { FaCheck } from "react-icons/fa";
 import moment from "moment";
 import { SwitchIcon } from "./AppIcons";
 import { RootState } from "../../Store/Store";
 import { VscDebugRestart } from "react-icons/vsc";
-import { Task } from "../../types";
+import { ListItemProps, Task } from "../../types";
+import styles from "../../styles/ToDo.module.scss";
+import ViewTask from "./ViewTask";
+
 const ToDoItemsList: FC = () => {
   const filter = useSelector((state: RootState) => state.filter);
   const { selectedCategories, selectedDate, selectedStatus } = filter;
-  const { tasks } = useSelector((state: RootState) => state.list);
+  const { tasks, editedTask } = useSelector((state: RootState) => state.list);
   const dispatch = useDispatch();
   const [currentList, setCurrentList] = React.useState<Task[]>(tasks);
 
@@ -31,55 +33,79 @@ const ToDoItemsList: FC = () => {
     );
     dispatch(setQuantityOfCurrentTasks(filteredList.length));
     setCurrentList(filteredList);
-  }, [filter,tasks]);
+  }, [filter, tasks, editedTask]);
 
   return (
     <>
-      {currentList.map((task, i) => {
-        const { id, title, createDate, category, completedDate } = task;
-        const classList = task.completedDate
-          ? `${styles.taskCompleted} ${styles.task}`
-          : `${styles.task}`;
-        const relativeDateCreate = moment(createDate).fromNow();
-        const relativeDateComplete = moment(completedDate).fromNow();
-        return (
-          <>
-            <div className={classList} key={id}>
-              <div className={`${styles.categoryIcon}`}>
-                <SwitchIcon option={category} />
-              </div>
-              <p className={styles.title}>{`${i + 1}.   ${title}`}</p>
+      {currentList.map((task, index) => (
+        <ListItem
+          key={task.id}
+          taskProps={task}
+          index={index}
+          editedTask={editedTask}
+        />
+      ))}
+    </>
+  );
+};
+const ListItem: FC<ListItemProps> = ({ taskProps, index, editedTask }) => {
+  const dispatch = useDispatch();
 
-              <p className={styles.description}>
-                {task.description.length > 100
-                  ? `${task.description.substring(0, 100)} ...`
-                  : task.description}
-              </p>
+  const { id, title, createDate, category, completedDate, description } =
+    taskProps;
 
-              <span className={styles.time}>
-                {completedDate
-                  ? `completed ${relativeDateComplete}`
-                  : `created ${relativeDateCreate}`}{" "}
-              </span>
-              <button
-                name="editButton"
-                className={`${styles.more} ${styles.icon}`}
-                onClick={() => dispatch(setEditedTask(task))}
-              >
-                <BsFileText></BsFileText>
-              </button>
+  let classList = completedDate
+    ? `${styles.taskCompleted} ${styles.task}`
+    : `${styles.task}`;
+  const isEdited = editedTask?.id === id;
+  classList = isEdited ? classList + " " + styles.editedTask : classList;
+  const relativeDateCreate = moment(createDate).fromNow();
+  const relativeDateComplete = moment(completedDate).fromNow();
+  const handleEditedTask = () => {
+    if (isEdited) {
+      dispatch(setEditedTask(null));
+      return;
+    }
+    dispatch(setEditedTask(taskProps));
+  };
 
-              <button
-                name="changeStatusButton"
-                onClick={() => dispatch(toggleCompleted(id))}
-                className={`${styles.completed} ${styles.icon}`}
-              >
-                {task.completedDate ? <VscDebugRestart /> : <FaCheck />}
-              </button>
-            </div>
-          </>
-        );
-      })}
+  return (
+    <>
+      <div className={classList} key={id}>
+        <div className={`${styles.categoryIcon}`}>
+          <SwitchIcon option={category} />
+        </div>
+        <p className={styles.title}>{`${index + 1}.   ${title}`}</p>
+
+        <p className={styles.description}>
+          {description.length > 100
+            ? `${description.substring(0, 100)} ...`
+            : description}
+        </p>
+
+        <span className={styles.time}>
+          {completedDate
+            ? `completed ${relativeDateComplete}`
+            : `created ${relativeDateCreate}`}{" "}
+        </span>
+        <button
+          name="editButton"
+          className={`${styles.more} ${styles.icon}`}
+          onClick={() => handleEditedTask()}
+        >
+          <BsFileText></BsFileText>
+        </button>
+
+        <button
+          name="changeStatusButton"
+          disabled={isEdited}
+          onClick={() => dispatch(toggleCompleted(id))}
+          className={`${styles.completed} ${styles.icon}`}
+        >
+          {completedDate ? <VscDebugRestart /> : <FaCheck />}
+        </button>
+        {isEdited && <ViewTask />}
+      </div>
     </>
   );
 };

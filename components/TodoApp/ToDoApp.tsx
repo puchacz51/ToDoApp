@@ -7,11 +7,10 @@ import FilterTasks from "./FilterTasks";
 import ToDoItemsList from "./TodoItemList";
 import styles from "../../styles/ToDo.module.scss";
 import AddForm from "./AddForm";
-import ViewTask from "./ViewTask";
 
 const SelectTasks: React.FC = () => {
   const { list } = useSelector((state: RootState) => state);
-  const { editedTask, categoriesOption, addedForm } = list;
+  const { categoriesOption, addedForm } = list;
   const dispatch = useDispatch();
   return (
     <div className={styles.toDoAppContainerWrapper}>
@@ -32,8 +31,6 @@ const SelectTasks: React.FC = () => {
         ></FilterTasks>
 
         <ToDoItemsList />
-
-        {editedTask && <ViewTask />}
       </div>
     </div>
   );

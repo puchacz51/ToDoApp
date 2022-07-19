@@ -98,6 +98,7 @@
   grid-column: 1/6;
   grid-row: 2;
   font-size: 0.9rem;
+  padding: 1rem;
   overflow-y: hidden;
 }
 
@@ -217,6 +218,12 @@ span.task {
     & button {
       width: 5rem;
       height: 5rem;
+    }
+    &.editedTask {
+      grid-template-rows: 1fr 1fr auto;
+      & div.view {
+        display: none;
+      }
     }
   }
   .categoryIcon {

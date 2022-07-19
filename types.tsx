@@ -52,6 +52,11 @@ interface TaskFilter {
   selectedDate: FilterDateOption;
   filterVisibility: boolean;
 }
+interface ListItemProps {
+  taskProps: Task;
+  index: number;
+  editedTask: Task | null;
+}
 
 export type {
   ToDoItemListProps,
@@ -64,4 +69,5 @@ export type {
   TaskFilter,
   TaskStatus,
   FilterDateOption,
+  ListItemProps,
 };
