@@ -1,3 +1,4 @@
+
 .select h2 {
   text-transform: uppercase;
   font-size: 3rem;
@@ -221,8 +222,10 @@ span.task {
     }
     &.editedTask {
       grid-template-rows: 1fr 1fr auto;
-      & div.view {
-        display: none;
+      & div.viewWrapper {
+        width: 100%;
+        grid-row: 3;
+        grid-column: 1/7;
       }
     }
   }

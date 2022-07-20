@@ -4,9 +4,10 @@ import { toggleAddedForm } from "../../Store/listSlice";
 import { Category } from "../../types";
 import React from "react";
 import FilterTasks from "./FilterTasks";
-import ToDoItemsList from "./TodoItemList";
 import styles from "../../styles/ToDo.module.scss";
 import AddForm from "./AddForm";
+import ToDoItemsList from "./TodoItemList";
+
 
 const SelectTasks: React.FC = () => {
   const { list } = useSelector((state: RootState) => state);

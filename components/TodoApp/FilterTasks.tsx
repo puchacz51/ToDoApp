@@ -125,7 +125,7 @@ const DateFilter: FC<{ selectedDate: FilterDateOption }> = ({
       if (
         calendarRef.current &&
         !calendarRef.current.contains(e.target as Node) &&
-        !selectDateBtnRef.current.contains(e.target as Node)
+        !selectDateBtnRef.current?.contains(e.target as Node)
       ) {
         setCalendarVisibility(false);
       }
