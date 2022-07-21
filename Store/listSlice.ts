@@ -68,7 +68,9 @@ const ListSlice = createSlice({
       const { id } = action.payload;
       const index = state.tasks.findIndex((task) => task.id === id);
       state.tasks[index] = action.payload;
+      state.editedTask = null;
       sortTasks(state.tasks);
+
     },
     toggleCompleted: (state, action: PayloadAction<string>) => {
       const id = action.payload;

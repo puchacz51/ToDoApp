@@ -1,5 +1,5 @@
 import styles from "../../styles/ViewTasks.module.scss";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../Store/Store";
 import { AiFillEdit } from "react-icons/ai";
@@ -20,7 +20,9 @@ const ViewTask: React.FC = () => {
     editedTask.description
   );
   const [category, setCategory] = useState<Category>(editedTask.category);
+  const [descriptionFocused, setDescriptionFocused] = useState<boolean>(false);
 
+  const refViewContainer = useRef(null);
   const removeTask = () => {
     dispatch(remove([editedTask?.id, editedTask?.completed]));
     dispatch(setEditedTask(null));
@@ -49,12 +51,16 @@ const ViewTask: React.FC = () => {
 
   return (
     <div className={styles.viewWrapper}>
-      <div className={styles.view}>
-        <div className={styles.innerView}>
+      <div ref={refViewContainer} className={styles.view}>
+        <div
+          className={`${styles.innerView} ${
+            descriptionFocused && styles.viewUp
+          }`}
+        >
           <span className={styles.cancel}>
             <button onClick={() => dispatch(setEditedTask(null))}>X</button>
           </span>
-        
+
           <label className={styles.title} htmlFor="title">
             Title
           </label>
@@ -89,9 +95,11 @@ const ViewTask: React.FC = () => {
           </label>
           <textarea
             className={styles.description}
-            disabled={!edited}
+            onFocus={() => setDescriptionFocused(true)}
+            onBlur={() => setDescriptionFocused(false)}
             onChange={(e) => setDescription(e.currentTarget.value)}
             value={description}
+            disabled={!edited}
           />
 
           {!edited ? (

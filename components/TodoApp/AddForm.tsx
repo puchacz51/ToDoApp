@@ -34,66 +34,72 @@ const AddForm: React.FC = () => {
   };
 
   return (
-    <div ref={refViewContainer} className={styles.view}>
-      <div
-        className={`${styles.innerView} ${descriptionFocused && styles.viewUp}`}
-      >
-        <span className={styles.cancel}>
-          <button onClick={() => dispatch(toggleAddedForm())}>X</button>
-        </span>
-        <label className={styles.title} htmlFor="title">
-          Title
-        </label>
-
-        <input
-          className={styles.title}
-          placeholder="TITLE"
-          type="text"
-          value={title}
-          onChange={(e) => setTitle(e.currentTarget.value)}
-        />
-
-        <label className={styles.categories} htmlFor="categories">
-          category
-        </label>
-
-        <select
-          className={styles.categories}
-          onChange={(e) => setCategoryOption(e.currentTarget.value as Category)}
-          name="categories"
+    <div className={styles.viewWrapper}>
+      <div ref={refViewContainer} className={styles.view}>
+        <div
+          className={`${styles.innerView} ${
+            descriptionFocused && styles.viewUp
+          }`}
         >
-          <option value="" selected>
-            SELECT
-          </option>
-          {categoriesOption.map((category) => {
-            return (
-              <option key={category} value={category}>
-                <p>{category.toLocaleUpperCase()}</p>
-                <SwitchIcon option={category as Category}></SwitchIcon>
-              </option>
-            );
-          })}
-        </select>
+          <span className={styles.cancel}>
+            <button onClick={() => dispatch(toggleAddedForm())}>X</button>
+          </span>
+          <label className={styles.title} htmlFor="title">
+            Title
+          </label>
 
-        <label className={styles.description} htmlFor="description">
-          Desciption
-        </label>
+          <input
+            className={styles.title}
+            placeholder="TITLE"
+            type="text"
+            value={title}
+            onChange={(e) => setTitle(e.currentTarget.value)}
+          />
 
-        <textarea
-          className={styles.description}
-          onFocus={() => setDescriptionFocused(true)}
-          onBlur={() => setDescriptionFocused(false)}
-          onChange={(e) => setDescription(e.currentTarget.value)}
-          value={description}
-        />
+          <label className={styles.categories} htmlFor="categories">
+            category
+          </label>
 
-        <button
-          disabled={!(title && description && categoryOption)}
-          className={`${styles.add} ${styles.icon}`}
-          onClick={addTask}
-        >
-          <IoMdAddCircle></IoMdAddCircle>
-        </button>
+          <select
+            className={styles.categories}
+            onChange={(e) =>
+              setCategoryOption(e.currentTarget.value as Category)
+            }
+            name="categories"
+          >
+            <option value="" selected>
+              SELECT
+            </option>
+            {categoriesOption.map((category) => {
+              return (
+                <option key={category} value={category}>
+                  <p>{category.toLocaleUpperCase()}</p>
+                  <SwitchIcon option={category as Category}></SwitchIcon>
+                </option>
+              );
+            })}
+          </select>
+
+          <label className={styles.description} htmlFor="description">
+            Desciption
+          </label>
+
+          <textarea
+            className={styles.description}
+            onFocus={() => setDescriptionFocused(true)}
+            onBlur={() => setDescriptionFocused(false)}
+            onChange={(e) => setDescription(e.currentTarget.value)}
+            value={description}
+          />
+
+          <button
+            disabled={!(title && description && categoryOption)}
+            className={`${styles.add} ${styles.icon}`}
+            onClick={addTask}
+          >
+            <IoMdAddCircle></IoMdAddCircle>
+          </button>
+        </div>
       </div>
     </div>
   );
