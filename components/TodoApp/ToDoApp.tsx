@@ -8,10 +8,9 @@ import styles from "../../styles/ToDo.module.scss";
 import AddForm from "./AddForm";
 import ToDoItemsList from "./TodoItemList";
 
-
 const SelectTasks: React.FC = () => {
   const { list } = useSelector((state: RootState) => state);
-  const { categoriesOption, addedForm } = list;
+  const { categoriesOption, addedForm, tasks } = list;
   const dispatch = useDispatch();
   return (
     <div className={styles.toDoAppContainerWrapper}>

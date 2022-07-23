@@ -34,6 +34,13 @@ const ToDoItemsList: FC = () => {
     dispatch(setQuantityOfCurrentTasks(filteredList.length));
     setCurrentList(filteredList);
   }, [filter, tasks, editedTask]);
+  if (!currentList.length) {
+    return (
+      <div className={styles.noTasks}>
+        <h3 >No tasks</h3>
+      </div>
+    );
+  }
 
   return (
     <>
