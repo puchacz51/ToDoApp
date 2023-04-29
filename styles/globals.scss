@@ -1,3 +1,9 @@
+$fontSize: 19px;
+$lineWidth: 2px;
+$lineColor: #ccc;
+$backgroundColor: #fff;
+$xPadding: 10px;
+
 * {
   font-family: "roboto", sans-serif;
   box-sizing: border-box;
@@ -46,6 +52,31 @@ body {
   }
 
   textarea {
+    min-height: 250px;
+    max-width: 100%;
+    font-size: $fontSize;
+    border: none;
+    background-attachment: local;
+    background-image: linear-gradient(
+        to right,
+        $backgroundColor,
+        $backgroundColor $xPadding,
+        transparent $xPadding
+      ),
+      linear-gradient(
+        to left,
+        $backgroundColor,
+        $backgroundColor $xPadding,
+        transparent $xPadding
+      ),
+      repeating-linear-gradient(
+        $backgroundColor,
+        $backgroundColor $fontSize * 2-$lineWidth,
+        $lineColor $fontSize * 2-$lineWidth,
+        $lineColor $fontSize * 2
+      );
+    line-height: $fontSize * 2;
+    padding: $fontSize/3 $xPadding;
     resize: none;
     height: 100%;
   }

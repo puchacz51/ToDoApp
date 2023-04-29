@@ -16,7 +16,7 @@ import { ListItemProps, Task } from "../../types";
 import styles from "../../styles/ToDo.module.scss";
 import ViewTask from "./ViewTask";
 
-const ToDoItemsList: FC = () => {
+const ToDoItemsList = () => {
   const filter = useSelector((state: RootState) => state.filter);
   const { selectedCategories, selectedDate, selectedStatus } = filter;
   const { tasks, editedTask } = useSelector((state: RootState) => state.list);
@@ -37,7 +37,7 @@ const ToDoItemsList: FC = () => {
   if (!currentList.length) {
     return (
       <div className={styles.noTasks}>
-        <h3 >No tasks</h3>
+        <h3>No tasks</h3>
       </div>
     );
   }

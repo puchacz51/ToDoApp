@@ -1,10 +1,16 @@
 import { NextPage } from "next";
-import LoginOptions from "../components/Login/LoginOption";
+import { Auth } from "@supabase/auth-ui-react";
+import { ThemeSupa } from "@supabase/auth-ui-shared";
+import { supabase } from "../SupaBase/supabase";
+
 
 const LoginPage: NextPage = () => {
   return (
     <>
-      <LoginOptions></LoginOptions>
+      <Auth
+        supabaseClient={supabase}
+        appearance={{ theme: ThemeSupa }}
+      />
     </>
   );
 };

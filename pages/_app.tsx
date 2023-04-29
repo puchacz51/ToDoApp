@@ -12,7 +12,6 @@ import { supabase } from "../SupaBase/supabase";
  * @return {JSX.Element}: The JSX Code for home page.
  */
 function MyApp({ Component, pageProps }: AppProps) {
-  supabase.getSubscriptions();
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={pStore}>
