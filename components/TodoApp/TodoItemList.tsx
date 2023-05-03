@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { FC } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -10,31 +10,32 @@ import { BsFileText } from "react-icons/bs";
 import { FaCheck } from "react-icons/fa";
 import moment from "moment";
 import { SwitchIcon } from "./AppIcons";
-import { RootState } from "../../Store/Store";
+import { useAppSelector } from "../../Store/Store";
 import { VscDebugRestart } from "react-icons/vsc";
-import { ListItemProps, Task } from "../../types";
+import { Category, ListItemProps, Task } from "../../types";
 import styles from "../../styles/ToDo.module.scss";
 import ViewTask from "./ViewTask";
+import { useToggleIsCompletedMutation } from "../../Store/taskApi";
 
-const ToDoItemsList = () => {
-  const filter = useSelector((state: RootState) => state.filter);
+const ToDoItemsList = ({ taskList = [] }: { taskList: Task[] }) => {
+  const filter = useAppSelector((state) => state.filter);
   const { selectedCategories, selectedDate, selectedStatus } = filter;
-  const { tasks, editedTask } = useSelector((state: RootState) => state.list);
+  const { editedTask } = useAppSelector((state) => state.list);
   const dispatch = useDispatch();
-  const [currentList, setCurrentList] = React.useState<Task[]>(tasks);
-
+  const [currentList, setCurrentList] = useState<Task[]>(taskList);
   useEffect(() => {
-    const filteredList = tasks.filter(
+    const filteredList = taskList?.filter(
       (task) =>
-        selectedCategories.includes(task.category) &&
-        task.createDate > selectedDate[0] &&
-        ((task.completedDate && selectedStatus.includes("completed")) ||
-          (!task.completedDate && selectedStatus.includes("active")))
+        selectedCategories.includes(task.category as Category) &&
+        new Date(task.created_at).getTime() > selectedDate[0] &&
+        ((task.completed_at && selectedStatus.includes("completed")) ||
+          (!task.completed_at && selectedStatus.includes("active")))
     );
     dispatch(setQuantityOfCurrentTasks(filteredList.length));
     setCurrentList(filteredList);
-  }, [filter, tasks, editedTask]);
-  if (!currentList.length) {
+  }, [filter, taskList]);
+
+  if (!currentList?.length) {
     return (
       <div className={styles.noTasks}>
         <h3>No tasks</h3>
@@ -44,7 +45,7 @@ const ToDoItemsList = () => {
 
   return (
     <>
-      {currentList.map((task, index) => (
+      {currentList?.map((task, index) => (
         <ListItem
           key={task.id}
           taskProps={task}
@@ -58,16 +59,26 @@ const ToDoItemsList = () => {
 const ListItem: FC<ListItemProps> = ({ taskProps, index, editedTask }) => {
   const dispatch = useDispatch();
 
-  const { id, title, createDate, category, completedDate, description } =
-    taskProps;
+  const {
+    id,
+    title,
+    created_at,
+    category,
+    completed_at,
+    description,
+    user_id,
+  } = taskProps;
+  const [setCompleted, { isLoading }] = useToggleIsCompletedMutation();
 
-  let classList = completedDate
-    ? `${styles.taskCompleted} ${styles.task}`
-    : `${styles.task}`;
   const isEdited = editedTask?.id === id;
-  classList = isEdited ? classList + " " + styles.editedTask : classList;
-  const relativeDateCreate = moment(createDate).fromNow();
-  const relativeDateComplete = moment(completedDate).fromNow();
+  let taskClassList = styles.task;
+  if (completed_at != null) taskClassList += " " + styles.taskCompleted;
+  if (isEdited) taskClassList += +" " + styles.editedTask;
+  if (isLoading) {
+    taskClassList += " " + styles.taskLoading;
+  }
+  const relativeDateCreate = moment(created_at).fromNow();
+  const relativeDateComplete = moment(completed_at).fromNow();
   const handleEditedTask = () => {
     if (isEdited) {
       dispatch(setEditedTask(null));
@@ -75,12 +86,15 @@ const ListItem: FC<ListItemProps> = ({ taskProps, index, editedTask }) => {
     }
     dispatch(setEditedTask(taskProps));
   };
+  const toggleCompleted = () => {
+    setCompleted({ taskId: id, completed: !!completed_at, userId: user_id });
+  };
 
   return (
     <>
-      <div className={classList} key={id}>
-        <div className={`${styles.categoryIcon}`}>
-          <SwitchIcon option={category} />
+      <div className={taskClassList} key={id}>
+        <div className={`${styles.categoryIcon} `}>
+          <SwitchIcon option={category as Category} />
         </div>
         <p className={styles.title}>{`${index + 1}.   ${title}`}</p>
 
@@ -91,7 +105,7 @@ const ListItem: FC<ListItemProps> = ({ taskProps, index, editedTask }) => {
         </p>
 
         <span className={styles.time}>
-          {completedDate
+          {completed_at
             ? `completed ${relativeDateComplete}`
             : `created ${relativeDateCreate}`}{" "}
         </span>
@@ -106,12 +120,13 @@ const ListItem: FC<ListItemProps> = ({ taskProps, index, editedTask }) => {
         <button
           name="changeStatusButton"
           disabled={isEdited}
-          onClick={() => dispatch(toggleCompleted(id))}
+          onClick={toggleCompleted}
           className={`${styles.completed} ${styles.icon}`}
         >
-          {completedDate ? <VscDebugRestart /> : <FaCheck />}
+          {completed_at ? <VscDebugRestart /> : <FaCheck />}
         </button>
         {isEdited && <ViewTask />}
+        {/* <div className={styles.taskLoadingLayer}>spinner</div> */}
       </div>
     </>
   );

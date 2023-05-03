@@ -64,26 +64,38 @@
   overflow: hidden;
   box-sizing: border-box;
   border-radius: 1rem;
+  position: relative;
+
+  &.taskCompleted {
+    background-color: rgba(84, 28, 28, 0.584);
+    color: #fff;
+    & .categoryIcon {
+      color: rgb(156, 126, 240);
+    }
+    & .completed {
+      background-color: rgb(156, 126, 240);
+      &:hover {
+        color: rgb(110, 60, 249);
+        border-color: rgb(110, 60, 249);
+      }
+    }
+  }
+  &.taskLoading {
+    filter: blur(3px);
+    &::after {
+      display: block;
+      content: "";
+      position: absolute;
+      inset: 0;
+    }
+  }
+
   & button {
     display: flex;
     align-items: center;
     justify-content: center;
     color: rred;
     box-shadow: inset 0 0 0.5em 9px #0000003d;
-  }
-}
-.taskCompleted {
-  background-color: rgba(84, 28, 28, 0.584);
-  color: #fff;
-  & .categoryIcon {
-    color: rgb(156, 126, 240);
-  }
-  & .completed {
-    background-color: rgb(156, 126, 240);
-    &:hover {
-      color: rgb(110, 60, 249);
-      border-color: rgb(110, 60, 249);
-    }
   }
 }
 

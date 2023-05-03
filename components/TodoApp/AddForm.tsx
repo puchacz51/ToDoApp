@@ -3,10 +3,12 @@ import React from "react";
 import styles from "../../styles/ViewTasks.module.scss";
 import { IoMdAddCircle } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../Store/Store";
+import { RootState, useAppSelector } from "../../Store/Store";
 import { toggleAddedForm, add } from "../../Store/listSlice";
 import { Category } from "../../types";
 import { SwitchIcon } from "./AppIcons";
+import { useAddNewTaskMutation } from "../../Store/taskApi";
+import { User } from "@supabase/supabase-js";
 const AddForm: React.FC = () => {
   const { categoriesOption } = useSelector((state: RootState) => state.list);
   const dispatch = useDispatch();
@@ -14,22 +16,23 @@ const AddForm: React.FC = () => {
   const [description, setDescription] = useState<string>("");
   const [categoryOption, setCategoryOption] = useState<Category | null>(null);
   const [descriptionFocused, setDescriptionFocused] = useState<boolean>(false);
+  const [addNewtask, {isLoading:newTaskIsloading}] = useAddNewTaskMutation();
 
+  
+  const user = useAppSelector(
+    (state) => state.supabase.supbaseSession?.user
+  ) as User;
   const refViewContainer = useRef(null);
 
   const addTask = () => {
     if (title.length > 0 && description.length > 0 && categoryOption != null) {
-      dispatch(
-        add({
-          title,
-          description,
-          category: categoryOption,
-          createDate: Date.now(),
-          completed: false,
-          completedDate: null,
-        })
-      );
-      dispatch(toggleAddedForm());
+      const newTask = {
+        title,
+        description,
+        category: categoryOption,
+        user_id: user.id,
+      };
+      addNewtask(newTask);
     }
   };
 

@@ -1,3 +1,5 @@
+import { Database } from "./SupaBase/schema";
+
 interface ToDoItemListProps {
   tasksList: Task[];
   setCompltedTask: Function;
@@ -5,17 +7,17 @@ interface ToDoItemListProps {
 }
 
 type Category = "gym" | "school" | "daily duties" | "work" | "others";
-type Task = {
-  id: string;
-  title: string;
-  description: string;
-  createDate: number;
-  completed: boolean;
-  lastModifiedDate?: number;
-  completedDate: number | null;
-  category: Category;
-};
-
+// type Task = {
+//   id: string;
+//   title: string;
+//   description: string;
+//   createDate: number;
+//   completed: boolean;
+//   lastModifiedDate?: number;
+//   completedDate: number | null;
+//   category: Category;
+// };
+type Task = Database["public"]["Tables"]["tasks"]["Row"];
 interface ListSlice {
   categoriesOption: string[];
   addedForm: boolean;

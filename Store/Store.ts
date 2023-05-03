@@ -1,32 +1,34 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import listSlice from "./listSlice";
 import filterSlice from "./filterSlice";
-import { persistStore, persistReducer } from "redux-persist";
-import storage from "redux-persist/lib/storage";
-import sessionStorage from "redux-persist/lib/storage/session";
 import thunk from "redux-thunk";
+import { TypedUseSelectorHook, useSelector } from "react-redux";
+import supabaseSlice from "./supabaseSlice";
+import taskApi from "./taskApi";
+import { createWrapper } from "next-redux-wrapper";
 
-const pListConfig = {
-  key: "list",
-  storage: storage,
-  blacklist: ["editedTask", "addedForm"],
-};
-const pFilterConfig = {
-  key: "filer",
-  storage: sessionStorage,
-};
-const pListReducer = persistReducer(pListConfig, listSlice);
-const pFilterReducer = persistReducer(pFilterConfig, filterSlice);
+
 const rootReducer = combineReducers({
-  list: pListReducer,
-  filter: pFilterReducer,
+  list: listSlice,
+  filter: filterSlice,
+  supabase: supabaseSlice,
+  [taskApi.reducerPath]: taskApi.reducer,
 });
 
-export const store = configureStore({
-  reducer: rootReducer,
-  middleware: [thunk],
-});
-export const pStore = persistStore(store);
-
-export type RootState = ReturnType<typeof store.getState>;
-export type AppDispatch = typeof store.dispatch;
+ const makeStore = () =>
+  configureStore({
+    reducer: rootReducer,
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware({
+        serializableCheck: {
+          ignoredPaths: ["supabase"],
+          ignoredActionPaths: ["payload.supabase"],
+        },
+      })
+        .concat(taskApi.middleware)
+        .concat([thunk]),
+  });
+export const  wrapper = createWrapper(makeStore)
+export type RootState = ReturnType<typeof rootReducer>;
+export type AppDispatch = ReturnType<typeof makeStore>["dispatch"];
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector;

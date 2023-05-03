@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../Store/Store";
+import { RootState, useAppSelector } from "../../Store/Store";
 import { toggleAddedForm } from "../../Store/listSlice";
 import { Category } from "../../types";
 import React from "react";
@@ -7,11 +7,23 @@ import FilterTasks from "./FilterTasks";
 import styles from "../../styles/ToDo.module.scss";
 import AddForm from "./AddForm";
 import ToDoItemsList from "./TodoItemList";
+import { Session } from "@supabase/supabase-js";
+import { useGetUserTasksQuery } from "../../Store/taskApi";
 
-const SelectTasks: React.FC = () => {
-  const { list } = useSelector((state: RootState) => state);
+const SelectTasks = () => {
+  const { list } = useAppSelector((state) => state);
+  const { user } = useAppSelector(
+    (state) => state.supabase.supbaseSession
+  ) as Session;
   const { categoriesOption, addedForm, tasks } = list;
+  const {
+    data: tasksList,
+    isLoading,
+    isError,
+    isFetching,
+  } = useGetUserTasksQuery(user.id);
   const dispatch = useDispatch();
+
   return (
     <div className={styles.toDoAppContainerWrapper}>
       <div className={styles.toDoAppContainer}>
@@ -30,7 +42,9 @@ const SelectTasks: React.FC = () => {
           categoriesOption={categoriesOption as Category[]}
         ></FilterTasks>
 
-        <ToDoItemsList />
+        {tasksList && (
+          <ToDoItemsList key={tasksList.length} taskList={tasksList} />
+        )}
       </div>
     </div>
   );

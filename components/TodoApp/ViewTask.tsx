@@ -7,44 +7,47 @@ import { BsFillTrashFill } from "react-icons/bs";
 import { FaSave } from "react-icons/fa";
 import { modify, remove, setEditedTask } from "../../Store/listSlice";
 import { Category, Task } from "../../types";
+import { useDeleteTaskMutation } from "../../Store/taskApi";
 
 const ViewTask: React.FC = () => {
-  const editedTask = useSelector(
-    (state: RootState) => state.list.editedTask as Task
-  );
+  const { category, completed_at, description, id, user_id, title } =
+    useSelector((state: RootState) => state.list.editedTask as Task);
   const { categoriesOption } = useSelector((state: RootState) => state.list);
-  const dispatch = useDispatch();
   const [edited, setEdited] = useState<Boolean>(false);
-  const [title, setTitle] = useState<string>(editedTask.title);
-  const [description, setDescription] = useState<string>(
-    editedTask.description
-  );
-  const [category, setCategory] = useState<Category>(editedTask.category);
-  const [descriptionFocused, setDescriptionFocused] = useState<boolean>(false);
+  const [currentTitle, setCurrentTitle] = useState<string>(title);
+  const [currentDescription, setCurrentDescription] =
+    useState<string>(description);
+  const [deleteTask, { isLoading: isDeleting }] = useDeleteTaskMutation();
 
+  const dispatch = useDispatch();
+  const [currentCategory, setCurrentCategory] = useState<Category>(
+    category as Category
+  );
+  const [descriptionFocused, setDescriptionFocused] = useState<boolean>(false);
   const refViewContainer = useRef(null);
   const removeTask = () => {
-    dispatch(remove([editedTask?.id, editedTask?.completed]));
+    deleteTask({ taskId: id, user_id });
     dispatch(setEditedTask(null));
   };
   const defualtValue = () => {
-    setTitle(editedTask.title);
-    setDescription(editedTask.description);
+    setCurrentTitle(title);
+    setCurrentDescription(description);
     setEdited(false);
   };
 
   const modifyTask = () => {
-    dispatch(
-      modify({
-        id: editedTask.id,
-        title,
-        category,
-        description,
-        createDate: editedTask.createDate,
-        completed: editedTask.completed,
-        completedDate: editedTask.completedDate ? Date.now() : null,
-      })
-    );
+    console.log(1);
+    
+    // dispatch(
+    //   modify({
+    //     id,
+    //     title: currentTitle,
+    //     category: currentCategory,
+    //     description: currentCategory,
+    //     completed_at,
+    //     created_at,
+    //   })
+    // );
 
     setEdited(false);
   };
@@ -66,7 +69,7 @@ const ViewTask: React.FC = () => {
           </label>
 
           <input
-            onChange={(e) => setTitle(e.currentTarget.value)}
+            onChange={(e) => setCurrentTitle(e.currentTarget.value)}
             className={styles.title}
             type="text"
             value={title}
@@ -80,7 +83,9 @@ const ViewTask: React.FC = () => {
             className={styles.categories}
             name="categories"
             disabled={!edited}
-            onChange={(e) => setCategory(e.currentTarget.value as Category)}
+            onChange={(e) =>
+              setCurrentCategory(e.currentTarget.value as Category)
+            }
           >
             {categoriesOption.map((cat) => {
               return (
@@ -97,7 +102,7 @@ const ViewTask: React.FC = () => {
             className={styles.description}
             onFocus={() => setDescriptionFocused(true)}
             onBlur={() => setDescriptionFocused(false)}
-            onChange={(e) => setDescription(e.currentTarget.value)}
+            onChange={(e) => setCurrentDescription(e.currentTarget.value)}
             value={description}
             disabled={!edited}
           />
