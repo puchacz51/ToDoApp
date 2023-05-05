@@ -15,9 +15,8 @@ import {} from "@supabase/auth-helpers-react";
  */
 
 function MyApp({ Component, ...pageProps }: AppProps) {
-  const { store, props } = wrapper.useWrappedStore(pageProps);
-
-  if (typeof window === "undefined") {
+  const { store } = wrapper.useWrappedStore(pageProps);
+  if (typeof window !== "undefined") {
     const dispath = store.dispatch;
     supabase.auth.onAuthStateChange((event, session) => {
       dispath(setSession(session));

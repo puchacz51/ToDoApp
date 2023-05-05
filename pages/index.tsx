@@ -2,9 +2,10 @@ import type { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import React from "react";
 import ToDoApp from "../components/TodoApp/ToDoApp";
-import { wrapper } from "../Store/Store";
+import { useAppSelector, wrapper } from "../Store/Store";
 import { createServerSupabaseClient } from "@supabase/auth-helpers-nextjs";
 import { setSession } from "../Store/supabaseSlice";
+import { useRouter } from "next/router";
 
 export const getServerSideProps = wrapper.getServerSideProps(
   (store) => async (ctx) => {
@@ -18,6 +19,13 @@ export const getServerSideProps = wrapper.getServerSideProps(
   }
 );
 const Home = () => {
+  const router = useRouter();
+  const { supbaseSession } = useAppSelector((state) => state.supabase);
+  if (!supbaseSession?.access_token) {
+    router.push("/login");
+
+    return <></>;
+  }
   return (
     <>
       <Head>
