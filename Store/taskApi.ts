@@ -2,7 +2,7 @@ import { createApi, fakeBaseQuery } from "@reduxjs/toolkit/query/react";
 import { supabase } from "../SupaBase/supabase";
 import { Task } from "../types";
 import { Database } from "../SupaBase/schema";
-import { setEditedTask } from "./listSlice";
+import { setEditedTask, toggleAddedForm } from "./listSlice";
 
 type taskInstert = Database["public"]["Tables"]["tasks"]["Insert"];
 
@@ -66,12 +66,11 @@ const taskApi = createApi({
             return draft;
           })
         );
-        queryFulfilled
-          .catch(patchResult.undo)
-          .then(() =>
-            taskApi.util.invalidateTags([{ type: "taskList", id: userId }])
-          );
+        queryFulfilled.catch(patchResult.undo).finally(() => {
+          taskApi.util.invalidateTags([{ type: "taskList", id: userId }]);
+        });
       },
+      invalidatesTags: ["taskList"],
     }),
     addNewTask: build.mutation({
       queryFn: async (newTask: taskInstert) => {
@@ -96,13 +95,14 @@ const taskApi = createApi({
             return draft;
           })
         );
-        dispatch(setEditedTask(null));
+        dispatch(toggleAddedForm());
         queryFulfilled
           .catch(patchResult.undo)
           .then(() =>
             taskApi.util.invalidateTags([{ type: "taskList", id: user_id }])
           );
       },
+      invalidatesTags: ["taskList"],
     }),
     deleteTask: build.mutation({
       queryFn: async ({
@@ -125,25 +125,70 @@ const taskApi = createApi({
               const deletingTaskId = draft.findIndex(
                 (task) => task.id === taskId
               );
-              draft[deletingTaskId].title = "deleting ... ";
+
+              const oldTitle = draft[deletingTaskId].title;
+              const newTitle = "delteting ... " + oldTitle;
+              draft[deletingTaskId].title = newTitle;
             }
             return draft;
           })
         );
         queryFulfilled.catch(patchResult.undo).then(() => {
-          console.log(user_id, "deleting");
-
           taskApi.util.invalidateTags([{ type: "taskList", id: user_id }]);
         });
       },
+      invalidatesTags: ["taskList"],
+    }),
+    modifyTask: build.mutation({
+      queryFn: async (editedTask: taskInstert) => {
+        try {
+          const res = await supabase
+            .from("tasks")
+            .update(editedTask)
+            .eq("id", editedTask.id);
+          return { data: res };
+        } catch (err) {
+          return { error: err };
+        }
+      },
+      onQueryStarted: (
+        editedTask,
+        { dispatch, queryFulfilled, getCacheEntry, getState }
+      ) => {
+        const patchResult = dispatch(
+          taskApi.util.updateQueryData(
+            "getUserTasks",
+            editedTask.user_id,
+            (draft) => {
+              if (draft?.length) {
+                const deletingTaskId = draft.findIndex(
+                  (task) => task.id === editedTask.id
+                );
+
+                const oldTitle = draft[deletingTaskId].title;
+                const newTitle = "modifing... " + oldTitle;
+                draft[deletingTaskId].title = newTitle;
+              }
+              return draft;
+            }
+          )
+        );
+        dispatch(setEditedTask(null));
+        queryFulfilled.catch(patchResult.undo).then(() => {
+          taskApi.util.invalidateTags([
+            { type: "taskList", id: editedTask.user_id },
+          ]);
+        });
+      },
+      invalidatesTags: ["taskList"],
     }),
   }),
 });
-
 export const {
   useGetUserTasksQuery,
   useToggleIsCompletedMutation,
   useAddNewTaskMutation,
   useDeleteTaskMutation,
+  useModifyTaskMutation,
 } = taskApi;
 export default taskApi;

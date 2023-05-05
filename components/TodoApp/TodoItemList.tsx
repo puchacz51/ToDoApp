@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import { FC } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
-  toggleCompleted,
   setEditedTask,
   setQuantityOfCurrentTasks,
 } from "../../Store/listSlice";
@@ -73,7 +72,7 @@ const ListItem: FC<ListItemProps> = ({ taskProps, index, editedTask }) => {
   const isEdited = editedTask?.id === id;
   let taskClassList = styles.task;
   if (completed_at != null) taskClassList += " " + styles.taskCompleted;
-  if (isEdited) taskClassList += +" " + styles.editedTask;
+  if (isEdited) taskClassList += " " + styles.editedTask;
   if (isLoading) {
     taskClassList += " " + styles.taskLoading;
   }

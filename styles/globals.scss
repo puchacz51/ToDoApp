@@ -23,9 +23,26 @@ body {
     right: 0;
     top: 0;
     background-color: #85ffbd;
+    position: relative;
+    & .singOutBtn {
+      position: absolute;
+      top: 50%;
+      right: 2%;
+      transform: translateY(-50%);
+      padding: 0.1rem;
+      font-size: 1rem;
+      text-transform: uppercase;
+      font-weight: 800;
+      background-color: rgb(255, 33, 33);
+      border: 0.3rem solid black;
+      border-radius: 0.5rem;
+      max-width: 7ch;
+      font-family: "roboto", sans-serif;
+      color: white;
+    }
   }
   h1 {
-    font-size: 3rem;
+    font-size: 2.2rem;
     line-height: 3rem;
     padding: 1rem;
     width: fit-content;

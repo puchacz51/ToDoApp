@@ -5,9 +5,12 @@ import { RootState } from "../../Store/Store";
 import { AiFillEdit } from "react-icons/ai";
 import { BsFillTrashFill } from "react-icons/bs";
 import { FaSave } from "react-icons/fa";
-import { modify, remove, setEditedTask } from "../../Store/listSlice";
+import { setEditedTask } from "../../Store/listSlice";
 import { Category, Task } from "../../types";
-import { useDeleteTaskMutation } from "../../Store/taskApi";
+import {
+  useDeleteTaskMutation,
+  useModifyTaskMutation,
+} from "../../Store/taskApi";
 
 const ViewTask: React.FC = () => {
   const { category, completed_at, description, id, user_id, title } =
@@ -18,7 +21,7 @@ const ViewTask: React.FC = () => {
   const [currentDescription, setCurrentDescription] =
     useState<string>(description);
   const [deleteTask, { isLoading: isDeleting }] = useDeleteTaskMutation();
-
+  const [modifyTask, { isLoading: isModifying }] = useModifyTaskMutation();
   const dispatch = useDispatch();
   const [currentCategory, setCurrentCategory] = useState<Category>(
     category as Category
@@ -35,20 +38,15 @@ const ViewTask: React.FC = () => {
     setEdited(false);
   };
 
-  const modifyTask = () => {
-    console.log(1);
-    
-    // dispatch(
-    //   modify({
-    //     id,
-    //     title: currentTitle,
-    //     category: currentCategory,
-    //     description: currentCategory,
-    //     completed_at,
-    //     created_at,
-    //   })
-    // );
-
+  const handleModifyTask = () => {
+    modifyTask({
+      id,
+      title: currentTitle,
+      category: currentCategory,
+      description: currentDescription,
+      completed_at,
+      user_id,
+    });
     setEdited(false);
   };
 
@@ -63,22 +61,19 @@ const ViewTask: React.FC = () => {
           <span className={styles.cancel}>
             <button onClick={() => dispatch(setEditedTask(null))}>X</button>
           </span>
-
           <label className={styles.title} htmlFor="title">
             Title
           </label>
-
           <input
             onChange={(e) => setCurrentTitle(e.currentTarget.value)}
             className={styles.title}
             type="text"
-            value={title}
+            value={currentTitle}
             disabled={!edited}
           />
           <label className={styles.categories} htmlFor="categories">
             categories
           </label>
-
           <select
             className={styles.categories}
             name="categories"
@@ -89,7 +84,7 @@ const ViewTask: React.FC = () => {
           >
             {categoriesOption.map((cat) => {
               return (
-                <option key={cat} value={cat} selected={cat == category}>
+                <option key={cat} value={cat} selected={cat == currentCategory}>
                   {cat.toLocaleUpperCase()}
                 </option>
               );
@@ -103,10 +98,9 @@ const ViewTask: React.FC = () => {
             onFocus={() => setDescriptionFocused(true)}
             onBlur={() => setDescriptionFocused(false)}
             onChange={(e) => setCurrentDescription(e.currentTarget.value)}
-            value={description}
+            value={currentDescription}
             disabled={!edited}
           />
-
           {!edited ? (
             <>
               <button className={styles.edit} onClick={() => setEdited(true)}>
@@ -118,7 +112,7 @@ const ViewTask: React.FC = () => {
             </>
           ) : (
             <>
-              <button onClick={modifyTask} className={styles.modify}>
+              <button onClick={handleModifyTask} className={styles.modify}>
                 <FaSave></FaSave>
               </button>
               <button onClick={defualtValue} className={styles.reset}>
