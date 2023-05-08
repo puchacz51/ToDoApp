@@ -2,7 +2,7 @@ import { createSlice, PayloadAction, nanoid } from "@reduxjs/toolkit";
 import { Task, ListSlice } from "../types";
 const Datenow = Number(new Date());
 const initialState: ListSlice = {
-  quantityOfCurrentTasks: 4,
+  quantityOfCurrentTasks: 0,
   editedTask: null,
   addedForm: false,
   categoriesOption: ["gym", "school", "work", "daily duties", "others"],
